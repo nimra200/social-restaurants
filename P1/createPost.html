@@ -12,45 +12,47 @@
     <body style="background-color: #203760; color:white;">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <!--TODO: Add links in Navbar to other pages -->
-            
-            <a class="navbar-brand" href="#">Restify</a> 
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active">
-                      <a class="nav-link" href="#">Home</a>
+        <nav class="navbar navbar-expand navbar-light bg-light">
+            <div class="container-fluid">
+              <a class="navbar-brand" href="#">Restify</a>
+              <div class="collapse navbar-collapse">
+                <ul class="navbar-nav me-auto">
+                  <li class="nav-item">
+                    <a class="nav-link" href="#">Home</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#">Feed</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="nav-link" href="#">My Restaurant</a>
+                  </li>
+        
+                  <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Notifications</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">John liked your blog post (2 minutes ago)</a></li>
+                            <li><a class="dropdown-item" href="#">Nimra left a comment (3 days ago)</a></li>
+                            <li><a class="dropdown-item" href="#">Your blog post received a view (4 days ago)</a></li>
+                        </ul>
                     </li>
-                    <li class="nav-item active">
-                        <a class="nav-link" href="#">Feed</a>
-                    </li>
-                    <li class="nav-item active">
-                        <a class="nav-link" href="#">My Restaurant Page</a>
-                    </li>
-
-                    
+        
+                </ul>
+        
+        
+                <ul class="navbar-nav ms-auto">
+        
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                          Notifications
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                          <a class="dropdown-item" href="#">John liked your blog post (2 minutes ago)</a>
-                          <div class="dropdown-divider"></div>
-                          <a class="dropdown-item" href="#">Nimra left a comment (3 days ago)</a>
-                          <div class="dropdown-divider"></div>
-                          <a class="dropdown-item" href="#">Your blog post received a view (4 days ago)</a>
-                        </div>
-                      </li>
- 
-                    <li class="nav-item active">
-                        <a class="nav-link" href="#">Logout</a>
+                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">My Profile</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">View Profile</a></li>
+                            <li><a class="dropdown-item" href="edit_profile.html">Edit Profile</a></li>
+                            <li><a class="dropdown-item" href="#">Log Out</a></li>
+                        </ul>
                     </li>
-                  </ul>
+                </ul>
+              </div>
             </div>
-        </nav>
+          </nav>
     
 
         <div class="jumbotron text-center">
@@ -62,7 +64,7 @@
         <form>
             <div class="container">
                 <div class="row">
-                    <div class="col">
+                    <div class="col-8">
                         <label for="title">Blog Title:</label>
                         <input type="text" name="title" class="form-control" size="40" value="Pumpkin Spice Latte is Finally Here"> <br><br>
                         <label for="file">Attach media to blog post</label> <br>
@@ -70,7 +72,7 @@
 
                     </div>
                     
-                    <div class="col">
+                    <div class="col-4">
                         <label for="author" style="align-items: center;">Author:</label>
                         <input type="text" name="author" class="form-control"  value="Jane from Cafe Delicious"><br><br>
                         <label for="topic">Topic:</label>
