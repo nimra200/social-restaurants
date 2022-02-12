@@ -2,7 +2,7 @@
   display: flex;
   flex-wrap: nowrap;
   flex-direction: column;
-  background-color: #203760; /* blue */
+  background-color: #203760; /*blue; */
 }
 
 .row {
@@ -14,7 +14,7 @@
 
 .blog_post_container {
     display: flex;
-    background-color: white; /* purple */
+    background-color: white; /*purple;*/
     height: 100%;
 }
 
@@ -24,8 +24,6 @@
     padding: 30px 30px 30px 30px;
 }
 
-.read_more_btn {
-}
 
 img {
     width: 50%;
