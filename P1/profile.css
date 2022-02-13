@@ -1,0 +1,35 @@
+.container {
+    background-color: white;
+    border-radius: 20px;
+}
+
+h1 {
+    font-size: 50px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.col-lg-3 {
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+p {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    color: gray;
+}
+
+.ul-class {
+    color: blue;
+    list-style: none;
+    padding-left: 0px;
+}
+
+.li-class {
+    margin-bottom: 20px;
+}
+
+.edit-btn {
+    margin-bottom: 10px;
+}
