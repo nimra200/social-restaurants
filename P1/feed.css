@@ -1,8 +1,11 @@
+body {
+    background-image: url('wallp.jpg');
+}
+
 .flex-container {
   display: flex;
   flex-wrap: nowrap;
   flex-direction: column;
-  background-color: #203760; /*blue; */
 }
 
 .row {
