@@ -1,0 +1,129 @@
+<html>
+   <head>
+       <!-- Required meta tags -->
+       <meta charset="utf-8">
+       <meta name="viewport" content="width=device-width, initial-scale=1">
+       <!-- Bootstrap CSS -->
+       <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+       <title>Edit Menu</title>
+   </head> 
+   <body style="background-color: #203760; color:white;">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+        <nav class="navbar navbar-expand navbar-light bg-light">  
+            <div class="container-fluid">  
+              <a class="navbar-brand" href="#">Restify</a>  
+              <div class="collapse navbar-collapse">  
+                <ul class="navbar-nav me-auto">  
+                  <li class="nav-item">  
+                    <a class="nav-link" href="home.html">Home</a>  
+                  </li>  
+                  <li class="nav-item">  
+                    <a class="nav-link" href="feed.html">Feed</a>  
+                  </li>  
+                  <li class="nav-item">  
+                      <a class="nav-link" href="#">My Restaurant</a>  
+                  </li>  
+          
+                  <li class="nav-item dropdown">  
+                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Notifications</a>  
+                        <ul class="dropdown-menu">  
+                            <li><a class="dropdown-item" href="#">John liked your blog post (2 minutes ago)</a></li>  
+                            <li><a class="dropdown-item" href="#">Nimra left a comment (3 days ago)</a></li>  
+                            <li><a class="dropdown-item" href="#">Your blog post received a view (4 days ago)</a></li>  
+                        </ul>  
+                    </li>  
+          
+                </ul>
+                <ul class="navbar-nav ms-auto">  
+  
+                    <li class="nav-item dropdown">  
+                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">My Profile</a>  
+                        <ul class="dropdown-menu">  
+                            <li><a class="dropdown-item" href="#">View Profile</a></li>  
+                            <li><a class="dropdown-item" href="edit_profile.html">Edit Profile</a></li>  
+                            <li><a class="dropdown-item" href="#">Log Out</a></li>  
+                        </ul>  
+                    </li>  
+                </ul>  
+              </div>  
+            </div>  
+          </nav>
+          <br /><br /> 
+          
+          <div class="jumbotron text-center">
+            <h2>Edit Your Menu</h2>
+        </div>
+          <form>
+            <div class="container py-5 border">
+                <div class="row">
+                    
+                    <div class="row">
+                        <div class="col">
+                            <label for="title"><h4>Enter Menu Title:</h4></label>
+                            <input type="text" name="title" class="form-control" size="40" value="Breakfast Options">
+                        </div>
+                        <div class="col">
+                            <label for="menu-section"><h4>Menu Section:</h4></label>
+                            <input type="text" name="menu-section" class="form-control"  value="Pastries">
+                            <br><br>
+                        </div>                    
+                    </div>
+                 
+                   <div class="row">
+                       <div class="col">
+                            <label for="details"><h4>Menu Description:</h4></label>
+                            <input type="text" name="details" class="form-control" value="A breakfast pastry menu that is affordable and appealing to everyone."></input>
+                            <br><br>
+                        </div>
+                   </div>
+                </div>
+                <h4>Existing Food Items:</h4>
+                <table>
+                    <thead>
+                        <tr>
+                            <th scope="col">Item Name</th>
+                            <th scope="col">Description</th>
+                            <th scope="col">Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                            <td><input type="text" value="Raspberry Jam Pastry"></td>
+                            <td><input type="text" value="A delightfully tender pastry with jam filling."></td>
+                            <td><input type="text" value="$2.50"></td>
+                            <td><button>Remove</button></td>
+                      </tr>
+                      <tr>
+                          <td><input type="text" value="Blueberry Muffin"></td>
+                          <td><input type="text" value="Whole wheat muffin with fresh blueberries."></td>
+                          <td><input type="text" value="$3.25"></td>
+                          <td><button>Remove</button></td>
+                      </tr>
+                      <tr>
+                          <td><input type="text" value="Strawberry Sprinkle Donut"></td>
+                          <td><input type="text" value="A colorful donut with a strawberry filling."></td>
+                          <td><input type="text" value="$0.99"></td>
+                          <td><button>Remove</button></td>
+                      </tr>
+                    </tbody>
+                </table>
+                <br><br>
+                <h4>Add new item to the menu</h4>
+                Item Name: <input type="text" value="Croissant">
+                Description: <input type="text" value="Organic pastry with butter.">
+                Price: <input type="text" value="$2.00">
+                Upload Image: <input type="file">
+                </div>
+                <br><br>
+                <input type="submit" class="btn btn-light" style="display:block; margin: 0 auto;" value="Update Menu">
+            
+
+        </form>
+  
+
+   </body>
+   <br>
+   <footer style="color: black; text-align: center; background-color: white;">
+        <p><a href="#">FAQ</a> | <a href="#">Twitter</a> | <a href="#">Facebook</a> | <a href="#">Instagram</a>  </p> 
+    </footer>
+</html>
