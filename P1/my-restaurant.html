@@ -1,0 +1,235 @@
+<html>
+    <head>
+        <!-- Required meta tags -->
+       <meta charset="utf-8">
+       <meta name="viewport" content="width=device-width, initial-scale=1">
+       <!-- Bootstrap CSS -->
+       <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <!-- Add icon library -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css">
+        
+        <title>Your Restaurant</title>
+    </head>
+    <body>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+        <nav class="navbar navbar-expand navbar-light bg-light">
+            <div class="container-fluid">
+              <a class="navbar-brand" href="home.html">Restify</a>
+              <div class="collapse navbar-collapse">
+                <ul class="navbar-nav me-auto">
+                  <li class="nav-item">
+                    <a class="nav-link" href="home.html">Home</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="feed.html">Feed</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="nav-link" href="my-restaurant.html">My Restaurant</a>
+                  </li>
+        
+                  <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Notifications</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">John liked your blog post (2 minutes ago)</a></li>
+                            <li><a class="dropdown-item" href="#">Nimra left a comment (3 days ago)</a></li>
+                            <li><a class="dropdown-item" href="#">Your blog post received a view (4 days ago)</a></li>
+                        </ul>
+                    </li>
+        
+                </ul>
+        
+        
+                <ul class="navbar-nav ms-auto">
+        
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">My Profile</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">View Profile</a></li>
+                            <li><a class="dropdown-item" href="edit_profile.html">Edit Profile</a></li>
+                            <li><a class="dropdown-item" href="#">Log Out</a></li>
+                        </ul>
+                    </li>
+                </ul>
+              </div>
+            </div>
+          </nav>
+        <div>
+            <h3>About Cafe Delicious</h3>
+            <p>This restaurant is an upscale cafe that opened in 2020. Our prices are affordable and the food is appealing to everyone. </p>
+        </div>
+        <a href="viewMenu.html">View Menu</a>
+        <br>
+        <a href="viewPosts.html">See Your Latest Blog Posts</a>
+        <h4>See what customers are saying about your restaurant</h4>
+        <!-- The following code was inspired from https://www.w3schools.com/howto/howto_css_user_rating.asp -->
+        <span class="heading">Restaurant Ratings</span>
+        <span style="color: orange;" class="fa fa-star"></span>
+        <span style="color:orange;" class="fa fa-star"></span>
+        <span style="color:orange;" class="fa fa-star"></span>
+        <span style="color:orange;" class="fa fa-star"></span>
+        <span class="fa fa-star"></span>   
+        <p>4.1 average based on 254 reviews.</p> 
+        <hr class="accent">
+        <div class="row">
+            <div class="col-2">
+              <div>5 star</div>
+            </div>
+            <div class="col-8">
+              <div style="width: 100%; background-color: #f1f1f1; text-align: center; color: white;" class="bar-container">
+                <div style="width: 60%; height: 18px; background-color: #04AA6D;" class="bar-5"></div>
+              </div>
+            </div>
+            <div class="col-2">
+              <div>150</div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-2">
+                <div>4 star</div>
+              </div>
+              <div class="col-8">
+                <div style="width: 100%; background-color: #f1f1f1; text-align: center; color: white;" class="bar-container">
+                  <div style="width: 30%; height: 18px; background-color: #2196F3;" class="bar-4"></div>
+                </div>
+              </div>
+              <div class="col-2">
+                <div>63</div>
+              </div>
+        </div>
+        <div class="row">
+            <div class="col-2">
+                <div>3 star</div>
+              </div>
+              <div class="col-8">
+                <div style="width: 100%; background-color: #f1f1f1; text-align: center; color: white;" class="bar-container">
+                  <div style="width: 10%; height: 18px; background-color: #00bcd4;" class="bar-3"></div>
+                </div>
+              </div>
+              <div class="col-2">
+                <div>15</div>
+              </div>
+        </div>    
+        <div class="row">
+            <div class="col-2">
+                <div>2 star</div>
+              </div>
+              <div class="col-8">
+                <div style="width: 100%; background-color: #f1f1f1; text-align: center; color: white;" class="bar-container">
+                  <div style="width: 4%; height: 18px; background-color: #ff9800;" class="bar-2"></div>
+                </div>
+              </div>
+              <div class="col-2">
+                <div>6</div>
+              </div>
+        </div>    
+        <div class="row">
+            <div class="col-2">
+                <div>1 star</div>
+              </div>
+              <div class="col-8">
+                <div style="width: 100%; background-color: #f1f1f1; text-align: center; color: white;" class="bar-container">
+                  <div style="width: 15%; height: 18px; background-color: #f44336;" class="bar-1"></div>
+                </div>
+              </div>
+              <div class="col-2">
+                <div>20</div>
+              </div>
+        </div>    
+        <br>    
+          
+          
+        <h5>Customer Reviews</h5>
+        <div class="row">
+            <div class="col-6">
+                <div class="card">
+                    <div class="card-body">
+
+                        <h6 class="card-title">Nimra Aftab <span class="font-weight-light float-end">Sunday Feb 01, 2022</span></h6>
+                        
+                        <span style="color: orange;" class="fa fa-star"></span>
+                        <span style="color:orange;" class="fa fa-star"></span>
+                        <span style="color:orange;" class="fa fa-star"></span>
+                        <span style="color:orange;" class="fa fa-star"></span>
+                        <span style="color:orange;" class="fa fa-star"></span>
+
+                        <p class="card-text py-2">This was the best restaurant I've ever visited. Wonderful food.
+                            <br>Customer service was stellar.
+                            <span class="float-end"><button type="submit" class="btn btn-primary"><span><i class="bi bi-hand-thumbs-up-fill"></i></span> Like</button></span>
+                        </p>
+                        
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="card">
+                    <div class="card-body">
+
+                        <h6 class="card-title">Jane Doe <span class="font-weight-light float-end">Saturday Jan 31, 2022</span></h6>
+                        
+                        <span style="color: orange;" class="fa fa-star"></span>
+                        <span style="color:orange;" class="fa fa-star"></span>
+                        <span style="color:orange;" class="fa fa-star"></span>
+                        <span style="color:orange;" class="fa fa-star"></span>
+                        <span class="fa fa-star"></span>  
+
+                        <p class="card-text py-2">Food was delicious, but price was too expensive for me.
+                            <br>Do not expect to afford this on a daily basis.
+                            <span class="float-end"><button type="submit" class="btn btn-primary"><span><i class="bi bi-hand-thumbs-up-fill"></i></span> Like</button></span>
+                        </p>
+                        
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <div class="card">
+                    <div class="card-body">
+
+                        <h6 class="card-title">Jack Mont <span class="font-weight-light float-end">Saturday Jan 31, 2022</span></h6>
+                        
+                        <span style="color: orange;" class="fa fa-star"></span>
+                        <span style="color:orange;" class="fa fa-star"></span>
+                        <span style="color:orange;" class="fa fa-star"></span>
+                        <span class="fa fa-star"></span>
+                        <span class="fa fa-star"></span>  
+
+                        <p class="card-text py-2">Lorem ipsum dolor. Lorem ipsum dolor.
+                            <br>More text here.
+                            <span class="float-end"><button type="submit" class="btn btn-primary"><span><i class="bi bi-hand-thumbs-up-fill"></i></span> Like</button></span>
+                        </p>
+                        
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="card">
+                    <div class="card-body">
+
+                        <h6 class="card-title">John Doe <span class="font-weight-light float-end">Tuesday Feb 02, 2022</span></h6>
+                        
+                        <span style="color: orange;" class="fa fa-star"></span>
+                        <span style="color:orange;" class="fa fa-star"></span>
+                        <span style="color:orange;" class="fa fa-star"></span>
+                        <span style="color:orange;" class="fa fa-star"></span>
+                        <span class="fa fa-star"></span>  
+
+                        <p class="card-text py-2">Lorem ipsum dolor. Lorem ipsum dolor.
+                            <br>More text here.
+                            <span class="float-end"><button type="submit" class="btn btn-primary"><span><i class="bi bi-hand-thumbs-up-fill"></i></span> Like</button></span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </body>
+    
+
+    
+
+</html>
