@@ -1,4 +1,4 @@
-from restaurants.models import Post
+from restaurants.models import Post, Restaurant
 from rest_framework import serializers
 
 class PostSerializer(serializers.ModelSerializer):
@@ -6,3 +6,16 @@ class PostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
         fields = ['title','picture', 'topic', 'description', 'created', 'owner_name']
+
+
+class RestaurantSerializer(serializers.ModelSerializer):
+    owner_id = serializers.ReadOnlyField()
+
+    class Meta:
+        model = Restaurant
+        fields = ['owner_id', 'name', 'phone_number', 'address', 'postal_code', 'email', 'logo']
+
+    def create(self, validated_data):
+        return super().create(validated_data | {'owner': self.context['request'].user})
+
+

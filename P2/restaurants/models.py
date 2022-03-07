@@ -1,16 +1,34 @@
 from django.db import models
 from django.contrib.auth.models import User 
 # Create your models here.
+from accounts.models import UserProfile
+
+
 class Post(models.Model):
     title = models.CharField(max_length=100)
-    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name="post") # one-to-many relationship: a post has one author but an author has many posts
+    owner = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name="post") # one-to-many relationship: a post has one author but an author has many posts
     picture = models.ImageField(upload_to='blog_pictures/', null=True, blank=True)
     topic = models.CharField(max_length=100)
     description = models.TextField(blank=True, null=True)
     created = models.DateTimeField(auto_now_add=True)
-    
+
     class Meta:
         ordering = ['created']
-    
+
     def __str__(self):
         return self.title
+
+
+class Restaurant(models.Model):
+    owner = models.OneToOneField(UserProfile, on_delete=models.CASCADE, related_name="restaurant")  # a user can have at most one restaurant
+    name = models.CharField(max_length=100)
+    phone_number = models.CharField(max_length=10)
+    address = models.CharField(max_length=100)
+    postal_code = models.CharField(max_length=6)
+    email = models.EmailField()
+    logo = models.ImageField(upload_to='restaurant_pictures/')
+
+    def __str__(self):
+        return self.name
+
+
