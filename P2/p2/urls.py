@@ -20,6 +20,12 @@ from django.conf import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+<<<<<<< HEAD
     path('restaurants/', include('restaurants.urls', namespace='restaurants') ),
     path('accounts/', include('accounts.urls', namespace='accounts'))
+=======
+    path('restaurants/', include('restaurants.urls', namespace='restaurants')),
+    path('accounts/', include('accounts.urls', namespace='accounts')),
+
+>>>>>>> bd001e6d5f5773f4e325b6579f2fe64cc9c246fa
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
