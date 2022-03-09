@@ -129,16 +129,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_ROOT = BASE_DIR / "media"
 MEDIA_URL = "media/"
 
-<<<<<<< HEAD
-REST_FRAMEWORK = { 'DEFAULT_AUTHENTICATION_CLASSES': (
-'rest_framework_simplejwt.authentication.JWTAuthentication', 'rest_framework.authentication.SessionAuthentication', 'rest_framework.authentication.BasicAuthentication',
-), }
-
-SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
-}
-=======
-
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
@@ -153,4 +143,3 @@ SIMPLE_JWT = {
 
 
 AUTH_USER_MODEL = 'accounts.UserProfile'
->>>>>>> bd001e6d5f5773f4e325b6579f2fe64cc9c246fa
