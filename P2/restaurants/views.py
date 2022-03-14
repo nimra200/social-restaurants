@@ -73,6 +73,11 @@ class DeletePostView(DestroyAPIView):
     permission_classes = (IsAuthenticated, IsOwner,)
     queryset = Post.objects.all()
 
+    def destroy(self, *args, **kwargs):
+        
+        super().destroy(*args, **kwargs)
+        return Response({'message':'Post deleted successfully'}, status=status.HTTP_200_OK)
+
 class ViewRestaurant(RetrieveAPIView):
     serializer_class = RestaurantSerializer
     permission_classes = [IsAuthenticated]

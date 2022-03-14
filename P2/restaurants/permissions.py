@@ -17,7 +17,9 @@ class IsOwner(permissions.BasePermission):
         
         if isinstance(obj,Post):
             return request.user == obj.owner
-        elif isinstance(obj, Menu):
+        if isinstance(obj, Menu):
             return request.user.restaurant == obj.restaurant
+        return True
+
 
     
