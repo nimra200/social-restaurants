@@ -7,13 +7,45 @@ from rest_framework.generics import get_object_or_404, ListAPIView, CreateAPIVie
 from rest_framework.permissions import IsAuthenticated
 from restaurants.permissions import IsOwner
 from rest_framework.response import Response
+from rest_framework import status
 
-from restaurants.serializers import PostSerializer, RestaurantSerializer
-from restaurants.models import Post
+
+from restaurants.serializers import FoodItemSerializer, PostSerializer, RestaurantSerializer, MenuSerializer
+from restaurants.models import Menu, Post, FoodItem
 from accounts.models import UserProfile
 
 # Create your views here.
+class CreateFoodAPIView(CreateAPIView, ListAPIView):
+    serializer_class = FoodItemSerializer
+    queryset = FoodItem.objects.all() 
 
+class DeleteMenuAPIView(DestroyAPIView):
+    serializer_class = MenuSerializer 
+    permission_classes = (IsAuthenticated, IsOwner,)
+    queryset = Menu.objects.all()
+
+    def get_object(self):
+        obj = get_object_or_404(self.queryset, pk=self.kwargs["pk"])
+        self.check_object_permissions(self.request, obj)
+        return obj
+    
+    def destroy(self, *args, **kwargs):
+        
+        super().destroy(*args, **kwargs)
+        return Response({'message':'Menu deleted successfully'}, status=status.HTTP_200_OK)
+    
+
+class RetrieveMenuAPIView(RetrieveAPIView):
+    serializer_class = MenuSerializer
+    queryset = Menu.objects.all()
+
+class CreateMenuAPIView(CreateAPIView, ListAPIView):
+    serializer_class = MenuSerializer
+    permission_classes = (IsAuthenticated, IsOwner,)
+
+    def perform_create(self, serializer):
+        serializer.save(restaurant=self.request.user.restaurant)
+        return super().perform_create(serializer)
 
 class PostsAPIView(ListAPIView):
     """ Return a list of all blog posts made by a restaurant owner."""
