@@ -1,19 +1,21 @@
-from unicodedata import name
 from django.db import models
 from django.contrib.auth.models import User 
 # Create your models here.
 from accounts.models import UserProfile
 
+
 class Post(models.Model):
     title = models.CharField(max_length=100)
-    owner = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name="post") # one-to-many relationship: a post has one author but an author has many posts
+    owner = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name="posts") # one-to-many relationship: a post has one author but an author has many posts
     picture = models.ImageField(upload_to='blog_pictures/', null=True, blank=True)
     topic = models.CharField(max_length=100)
     description = models.TextField(blank=True, null=True)
     created = models.DateTimeField(auto_now_add=True)
 
+    liked_by = models.ManyToManyField(UserProfile, related_name='likes', blank=True)
+
     class Meta:
-        ordering = ['created']
+        ordering = ['-created']
 
     def __str__(self):
         return self.title
@@ -32,6 +34,11 @@ class Restaurant(models.Model):
         return self.name
 
 
+class RestaurantImage(models.Model):
+    img = models.ImageField()
+    restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE, related_name='images')
+
+
 class FoodItem(models.Model):
     name = models.CharField(max_length=100, unique=True)
     description = models.TextField()
@@ -40,10 +47,11 @@ class FoodItem(models.Model):
     def __str__(self):
         return self.name
 
+
 class Menu(models.Model):
     menu_name = models.CharField(max_length=100, unique=True)
     restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
     food = models.ManyToManyField(FoodItem, related_name='food')
-    
+
     def __str__(self):
         return self.menu_name
