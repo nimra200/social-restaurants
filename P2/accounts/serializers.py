@@ -62,6 +62,10 @@ class RegisterSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError({"email": "Invalid Email ID"})
         if len(attrs['password']) < 8:
             raise serializers.ValidationError({"password": "Password is too short"})
+        if UserProfile.objects.filter(username=attrs['username']).exists():
+            raise serializers.ValidationError({"username": "account with this username already exists"})
+        if UserProfile.objects.filter(username=attrs['email']).exists():
+            raise serializers.ValidationError({"email": "account with this email already exists"})
         return attrs
 
     def create(self, validated_data):
