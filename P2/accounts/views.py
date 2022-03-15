@@ -65,7 +65,7 @@ class EditProfileView(RetrieveAPIView, UpdateAPIView):
     queryset = UserProfile.objects.all()
 
     def get_object(self):
-        return self.request.user
+        return UserProfile.objects.get(id=self.kwargs['pk'])
 
 
 
