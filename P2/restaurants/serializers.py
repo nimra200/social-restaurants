@@ -1,5 +1,5 @@
 from accounts.serializers import ProfileSerializer
-from restaurants.models import Post, Restaurant, FoodItem, Menu
+from restaurants.models import Post, Restaurant, FoodItem, Menu, Comment
 from rest_framework import serializers
 
 
@@ -41,3 +41,9 @@ class RestaurantSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         return super().create(validated_data | {'owner': self.context['request'].user})
 
+
+class CommentSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Comment
+        fields = ['title', 'text', 'restaurant', 'rating']

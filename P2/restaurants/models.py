@@ -1,3 +1,4 @@
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.contrib.auth.models import User 
 # Create your models here.
@@ -55,3 +56,14 @@ class Menu(models.Model):
 
     def __str__(self):
         return self.menu_name
+
+class Comment(models.Model):
+    title = models.CharField(max_length=100, primary_key=True)
+    text = models.TextField()
+    author = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name="comment")
+    rating = models.IntegerField(validators=[MaxValueValidator(5), MinValueValidator(1)])
+    restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE, related_name="comment")
+
+    def __str__(self):
+        return self.text
+

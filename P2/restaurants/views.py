@@ -3,17 +3,19 @@ from tracemalloc import get_object_traceback
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse, Http404
 from django.shortcuts import render
-from rest_framework.generics import get_object_or_404, ListAPIView, CreateAPIView, UpdateAPIView, RetrieveAPIView, \
+from rest_framework import permissions, filters
+from rest_framework.generics import get_object_or_404, ListAPIView, CreateAPIView, ListCreateAPIView, UpdateAPIView, RetrieveAPIView, \
     DestroyAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.pagination import PageNumberPagination
 from accounts.models import Notification, UserProfile
 from accounts.serializers import ProfileSerializer
-from restaurants.permissions import IsOwner
-from restaurants.serializers import PostSerializer, RestaurantSerializer, FoodItemSerializer, MenuSerializer
-from restaurants.models import Post, Restaurant, FoodItem, Menu
-
+from restaurants.permissions import IsOwner, IsAuthor
+from restaurants.serializers import PostSerializer, RestaurantSerializer, FoodItemSerializer, MenuSerializer, CommentSerializer
+from restaurants.models import Post, Restaurant, FoodItem, Menu, Comment
+from django.contrib.auth.models import User
 
 # Create your views here.
 
@@ -206,6 +208,65 @@ class UnlikePost(RetrieveAPIView):
     def retrieve(self, request, *args, **kwargs):
         post = get_object_or_404(Post, id=kwargs['pid'])
         post.liked_by.remove(request.user)
+        return super().retrieve(request, *args, **kwargs)
+
+class SearchView(ListCreateAPIView):
+    """Retrieves search results data based on the input entered into
+    search bar, searches mainly look for a restaurant in the website"""
+    serializer_class = RestaurantSerializer
+    permission_classes = [permissions.AllowAny]
+    pagination_class = PageNumberPagination
+    pagination_class.page_size = 5
+    model = Restaurant
+    search_fields = ['name', 'address', 'menu__food__name']
+    filter_backends = (filters.SearchFilter,)
+    queryset = Restaurant.objects.all()
+
+
+class AddCommentView(CreateAPIView):
+    """"Add a comment to a restaurant, author refers to the user profile
+    that adds the comment."""
+    serializer_class = CommentSerializer
+    permission_classes = (IsAuthenticated, )
+
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user)
+
+
+class DeleteCommentView(DestroyAPIView):
+    """Delete a comment made on a restaurant.
+    User needs to be authenticated in to delete their comment. """
+    serializer_class = CommentSerializer
+    permission_classes = (IsAuthenticated, IsAuthor,)
+    queryset = Comment.objects.all()
+
+    def get_object(self):
+        obj = get_object_or_404(self.queryset, title=self.kwargs['title'])
+        self.check_object_permissions(self.request, obj)
+        return obj
+
+    def delete(self, request, *args, **kwargs):
+        super().delete(request, *args, **kwargs)
+        return Response({'message': 'Comment deleted'}, status=200)
+
+
+class EditCommentView(RetrieveAPIView, UpdateAPIView):
+    """Edits/updates a comment made on a restaurant by user who must be the
+    author"""
+    model = Comment
+    serializer_class = CommentSerializer
+    permission_classes = (IsAuthenticated, IsAuthor,)
+
+    def get_object(self):
+        obj = get_object_or_404(Comment, title=self.kwargs['title'])
+        self.check_object_permissions(self.request, obj)
+        return obj
+
+    def retrieve(self, request, *args, **kwargs):
+        try:
+            self.get_object()
+        except ObjectDoesNotExist:
+            raise Http404
         return super().retrieve(request, *args, **kwargs)
 
 

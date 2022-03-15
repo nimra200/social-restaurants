@@ -7,4 +7,4 @@ admin.site.register(Post)
 admin.site.register(Restaurant)
 admin.site.register(FoodItem)
 admin.site.register(Menu)
-
+admin.site.register(Comment)
