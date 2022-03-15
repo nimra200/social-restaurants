@@ -1,7 +1,7 @@
 from restaurants.views import PostsAPIView, CreateRestaurant, UpdateRestaurant, ViewMyRestaurant, FollowRestaurant, \
     CreatePostView, DeletePostView, UnfollowRestaurant, ViewRestaurant, LikePost, UnlikePost, CreateMenuAPIView, \
-    RetrieveMenuAPIView, DeleteMenuAPIView, CreateFoodAPIView, AddImage, LikeRestaurant, UnlikeRestaurant, SearchView, \
-    AddCommentView, EditCommentView, DeleteCommentView
+    RetrieveMenuAPIView, DeleteMenuAPIView, AddImage, LikeRestaurant, UnlikeRestaurant, SearchView, \
+    AddCommentView, EditCommentView, DeleteCommentView, UpdateMenuAPIView
 from django.urls import path
 
 app_name = "restaurants"
@@ -26,9 +26,9 @@ urlpatterns = [
 
     path('create-menu/', CreateMenuAPIView.as_view(), name='create_menu'),
     path('view-menu/<int:pk>/', RetrieveMenuAPIView.as_view(), name='view_menu'),
+    path('edit-menu/<int:pk>/', UpdateMenuAPIView.as_view(), name="view_menu"),
     path('delete-menu/<int:pk>/', DeleteMenuAPIView.as_view(), name='delete-menu'),
-    path('food/', CreateFoodAPIView.as_view(), name="food"),
-
+   
     path('search/', SearchView.as_view(), name='search'),
     path('add_comment/', AddCommentView.as_view(), name='add_comment'),
     path('<str:title>/edit_comment/', EditCommentView.as_view(), name='edit_comment'),

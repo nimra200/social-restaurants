@@ -21,12 +21,6 @@ from restaurants.models import Post, Restaurant, FoodItem, Menu, Comment
 
 # Create your views here.
 
-
-class CreateFoodAPIView(CreateAPIView, ListAPIView):
-    serializer_class = FoodItemSerializer
-    queryset = FoodItem.objects.all()
-
-
 class DeleteMenuAPIView(DestroyAPIView):
     serializer_class = MenuSerializer
     permission_classes = (IsAuthenticated, IsOwner,)
@@ -47,7 +41,7 @@ class RetrieveMenuAPIView(RetrieveAPIView):
     queryset = Menu.objects.all()
 
 
-class CreateMenuAPIView(CreateAPIView, ListAPIView):
+class CreateMenuAPIView(CreateAPIView):
     serializer_class = MenuSerializer
     permission_classes = (IsAuthenticated, IsOwner,)
 
@@ -55,6 +49,10 @@ class CreateMenuAPIView(CreateAPIView, ListAPIView):
         serializer.save(restaurant=self.request.user.restaurant)
         return super().perform_create(serializer)
 
+class UpdateMenuAPIView(UpdateAPIView):
+    serializer_class = MenuSerializer
+    permission_classes = (IsAuthenticated, IsOwner,)
+    queryset = Menu.objects.all()
 
 class PostsAPIView(ListAPIView):
     """ Return a list of all blog posts made by a restaurant owner."""

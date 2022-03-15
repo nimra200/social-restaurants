@@ -41,23 +41,22 @@ class RestaurantImage(models.Model):
     img = models.ImageField(upload_to='restaurant_pictures/')
     restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE, related_name='images')
 
+class Menu(models.Model):
+    menu_name = models.CharField(max_length=100, unique=True)
+    restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.menu_name
+
 
 class FoodItem(models.Model):
     name = models.CharField(max_length=100, unique=True)
     description = models.TextField()
     price = models.FloatField()
+    menu = models.ForeignKey(Menu, related_name="foods", on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
         return self.name
-
-
-class Menu(models.Model):
-    menu_name = models.CharField(max_length=100, unique=True)
-    restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
-    food = models.ManyToManyField(FoodItem, related_name='food')
-
-    def __str__(self):
-        return self.menu_name
 
 
 class Comment(models.Model):

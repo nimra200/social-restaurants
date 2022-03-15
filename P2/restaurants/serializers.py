@@ -4,22 +4,42 @@ from rest_framework import serializers
 
 
 class FoodItemSerializer(serializers.ModelSerializer):
-    id = serializers.ReadOnlyField()
-
     class Meta:
         model = FoodItem
-        fields = ['id', 'name', 'description', 'price']
+        fields = ['name', 'description', 'price']
 
 
 class MenuSerializer(serializers.ModelSerializer):
     id = serializers.ReadOnlyField()
     restaurant = serializers.CharField(source='restaurant.name', read_only=True)
-    food = serializers.SlugRelatedField(many=True, slug_field='name', queryset=FoodItem.objects.all())
+    foods = FoodItemSerializer(many=True)
 
     class Meta:
         model = Menu
-        fields = ['id', 'menu_name', 'restaurant', 'food']
+        fields = ['id', 'menu_name', 'restaurant', 'foods']
 
+    def create(self, validated_data):
+        foods_data = validated_data.pop('foods')
+        menu = Menu.objects.create(**validated_data)
+        for food_data in foods_data:
+            FoodItem.objects.create(menu=menu, **food_data)
+        return menu
+
+    def update(self, instance, validated_data):
+        foods_data = validated_data.pop('foods')
+        foods = (instance.foods).all()
+        foods = list(foods)
+        instance.menu_name = validated_data.get('menu_name', instance.menu_name)
+        instance.restaurant = validated_data.get('restaurant', instance.restaurant)
+        instance.save()
+
+        for food_data in foods_data:
+            food = foods.pop(0)
+            food.name = food_data.get('name', food.name)
+            food.description = food_data.get('description', food.description)
+            food.price = food_data.get('price', food.price)
+            food.save()
+        return instance
 
 class PostSerializer(serializers.ModelSerializer):
     owner_name = serializers.CharField(source='owner.get_full_name', read_only=True)
