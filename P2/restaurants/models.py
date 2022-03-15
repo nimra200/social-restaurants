@@ -61,7 +61,7 @@ class Menu(models.Model):
 
 
 class Comment(models.Model):
-    title = models.CharField(max_length=100)
+    title = models.CharField(max_length=100, primary_key=True)
     text = models.TextField()
     author = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name="comments")
     rating = models.IntegerField(validators=[MaxValueValidator(5), MinValueValidator(1)])

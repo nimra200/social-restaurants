@@ -1,6 +1,7 @@
 from tracemalloc import get_object_traceback
 
 from django.core.exceptions import ObjectDoesNotExist
+from django.db.models import Count
 from django.http import HttpResponse, Http404
 from django.shortcuts import render
 from rest_framework import status, permissions, filters
@@ -281,7 +282,7 @@ class SearchView(ListCreateAPIView):
     model = Restaurant
     search_fields = ['name', 'address', 'menu__food__name']
     filter_backends = (filters.SearchFilter,)
-    queryset = Restaurant.objects.all()
+    queryset = Restaurant.objects.all().annotate(num_followers=Count('followers')).order_by('-num_followers')
 
 
 class AddCommentView(CreateAPIView):
@@ -291,7 +292,15 @@ class AddCommentView(CreateAPIView):
     permission_classes = (IsAuthenticated,)
 
     def perform_create(self, serializer):
-        serializer.save(author=self.request.user)
+        comment = serializer.save(author=self.request.user)
+
+        # send notification to owner
+        new_notification = Notification()
+        new_notification.type = 'Comment'
+        new_notification.from_user = self.request.user
+        new_notification.to_user = comment.restaurant.owner
+        new_notification.restaurant = comment.restaurant
+        new_notification.save()
 
 
 class DeleteCommentView(DestroyAPIView):

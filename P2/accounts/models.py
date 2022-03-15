@@ -15,7 +15,8 @@ class Notification(models.Model):
         ('Like', 'Like'),
         ('Comment', 'Comment'),
         ('Follow', 'Follow'),
-        ('Post', 'Post')
+        ('Post', 'Post'),
+        ('Update', 'Update')
     )
     type = models.CharField(max_length=200, choices=TYPE)
     date = models.DateTimeField(auto_now_add=True)

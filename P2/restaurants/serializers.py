@@ -44,11 +44,13 @@ class RestaurantSerializer(serializers.ModelSerializer):
     owner_id = serializers.ReadOnlyField()
     id = serializers.ReadOnlyField()
     num_likes = serializers.IntegerField(source='liked_by.count', read_only=True)
+    num_followers = serializers.IntegerField(source='followers.count', read_only=True)
     images = ImageSerializer(many=True, read_only=True)
 
     class Meta:
         model = Restaurant
-        fields = ['id', 'owner_id', 'name', 'phone_number', 'address', 'postal_code', 'email', 'logo', 'num_likes', 'images']
+        fields = ['id', 'owner_id', 'name', 'phone_number', 'address', 'postal_code', 'email', 'logo', 'num_likes',
+                  'num_followers', 'images']
 
     def create(self, validated_data):
         return super().create(validated_data | {'owner': self.context['request'].user})
