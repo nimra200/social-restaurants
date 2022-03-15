@@ -1,13 +1,14 @@
 from django.shortcuts import render
 
 # Create your views here.
-from rest_framework import generics, permissions
-from rest_framework.generics import RetrieveAPIView, ListAPIView, CreateAPIView, UpdateAPIView
+from rest_framework import permissions
+from rest_framework.generics import RetrieveAPIView, ListAPIView, UpdateAPIView, CreateAPIView
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
 
 from accounts.models import Notification, UserProfile
-from accounts.serializers import ProfileSerializer, NotificationSerializer, RegisterSerializer, EditProfileSerializer
+from accounts.serializers import ProfileSerializer, NotificationSerializer, EditProfileSerializer, RegisterSerializer
 from restaurants.models import Post
 from restaurants.serializers import PostSerializer
 
@@ -45,6 +46,7 @@ class GetFeed(ListAPIView):
             acc |= rest.owner.posts.all()
         return acc
 
+
 class RegisterView(CreateAPIView):
     """Registers and creates user to the website database after sign up is completed,
     validation of registration data is done in the serializer"""
@@ -53,8 +55,8 @@ class RegisterView(CreateAPIView):
     permission_classes = [permissions.AllowAny]
 
     def create(self, request, *args, **kwargs):
-        if UserProfile.objects.filter(username=self.request.POST['email']).exists() or \
-                UserProfile.objects.filter(email=self.request.POST['username']).exists():
+        if (self.request.POST['email'] and UserProfile.objects.filter(email=self.request.POST['email']).exists()) or \
+                UserProfile.objects.filter(username=self.request.POST['username']).exists():
             return Response({'error': 'User with email or username already exists'}, status=403)
         return super().create(request, *args, **kwargs)
 
@@ -62,12 +64,6 @@ class RegisterView(CreateAPIView):
 class EditProfileView(RetrieveAPIView, UpdateAPIView):
     serializer_class = EditProfileSerializer
     permission_classes = [IsAuthenticated]
-    queryset = UserProfile.objects.all()
 
     def get_object(self):
-        return UserProfile.objects.get(id=self.kwargs['pk'])
-
-
-
-
-
+        return self.request.user

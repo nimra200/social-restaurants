@@ -14,13 +14,15 @@ class Notification(models.Model):
     TYPE = (
         ('Like', 'Like'),
         ('Comment', 'Comment'),
-        ('Follow', 'Follow')
+        ('Follow', 'Follow'),
+        ('Post', 'Post')
     )
     type = models.CharField(max_length=200, choices=TYPE)
     date = models.DateTimeField(auto_now_add=True)
     to_user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='notifications')  # many-to-one
     from_user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     post = models.ForeignKey('restaurants.Post', on_delete=models.CASCADE, null=True, blank=True)
+    restaurant = models.ForeignKey('restaurants.Restaurant', on_delete=models.CASCADE, null=True, blank=True)
 
     class Meta:
         ordering = ['-date']    # newest notifications first

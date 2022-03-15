@@ -3,19 +3,20 @@ from tracemalloc import get_object_traceback
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse, Http404
 from django.shortcuts import render
-from rest_framework import permissions, filters
-from rest_framework.generics import get_object_or_404, ListAPIView, CreateAPIView, ListCreateAPIView, UpdateAPIView, RetrieveAPIView, \
-    DestroyAPIView
+from rest_framework import status, permissions, filters
+from rest_framework.generics import get_object_or_404, ListAPIView, CreateAPIView, UpdateAPIView, RetrieveAPIView, \
+    DestroyAPIView, ListCreateAPIView
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from rest_framework import status
-from rest_framework.pagination import PageNumberPagination
+
 from accounts.models import Notification, UserProfile
 from accounts.serializers import ProfileSerializer
 from restaurants.permissions import IsOwner, IsAuthor
-from restaurants.serializers import PostSerializer, RestaurantSerializer, FoodItemSerializer, MenuSerializer, CommentSerializer
+from restaurants.serializers import PostSerializer, RestaurantSerializer, FoodItemSerializer, MenuSerializer, \
+    ImageSerializer, CommentSerializer
 from restaurants.models import Post, Restaurant, FoodItem, Menu, Comment
-from django.contrib.auth.models import User
+
 
 # Create your views here.
 
@@ -72,7 +73,17 @@ class CreatePostView(CreateAPIView):
 
     def perform_create(self, serializer):
         self.check_object_permissions(self.request, Post)
-        serializer.save(owner=self.request.user)
+        new_post = serializer.save(owner=self.request.user)
+
+        for user in self.request.user.restaurant.followers.all():
+            # send notification to user
+            new_notification = Notification()
+            new_notification.type = 'Post'
+            new_notification.from_user = self.request.user
+            new_notification.restaurant = self.request.user.restaurant
+            new_notification.to_user = user
+            new_notification.post = new_post
+            new_notification.save()
 
 
 class DeletePostView(DestroyAPIView):
@@ -83,9 +94,9 @@ class DeletePostView(DestroyAPIView):
     queryset = Post.objects.all()
 
     def destroy(self, *args, **kwargs):
-        
         super().destroy(*args, **kwargs)
-        return Response({'message':'Post deleted successfully'}, status=status.HTTP_200_OK)
+        return Response({'message': 'Post deleted successfully'}, status=status.HTTP_200_OK)
+
 
 class ViewRestaurant(RetrieveAPIView):
     serializer_class = RestaurantSerializer
@@ -183,6 +194,7 @@ class LikePost(RetrieveAPIView):
     def retrieve(self, request, *args, **kwargs):
         post = get_object_or_404(Post, id=kwargs['pid'])
         if request.user in post.liked_by.all():
+            # already liked
             return super().retrieve(request, *args, **kwargs)
 
         post.liked_by.add(request.user)
@@ -210,6 +222,55 @@ class UnlikePost(RetrieveAPIView):
         post.liked_by.remove(request.user)
         return super().retrieve(request, *args, **kwargs)
 
+
+class AddImage(CreateAPIView):
+    serializer_class = ImageSerializer
+    permission_classes = [IsAuthenticated, IsOwner]
+
+    def perform_create(self, serializer):
+        serializer.save(restaurant=self.request.user.restaurant)
+        return super().perform_create(serializer)
+
+
+class LikeRestaurant(RetrieveAPIView):
+    serializer_class = RestaurantSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        return get_object_or_404(Restaurant, id=self.kwargs['rid'])
+
+    def retrieve(self, request, *args, **kwargs):
+        restaurant = get_object_or_404(Restaurant, id=kwargs['rid'])
+        if request.user in restaurant.liked_by.all():
+            # already liked
+            return super().retrieve(request, *args, **kwargs)
+
+        restaurant.liked_by.add(request.user)
+
+        # Send notification to owner
+        new_notification = Notification()
+        new_notification.from_user = request.user
+        new_notification.to_user = restaurant.owner
+        new_notification.type = 'Like'
+        new_notification.restaurant = restaurant
+        new_notification.save()
+
+        return super().retrieve(request, *args, **kwargs)
+
+
+class UnlikeRestaurant(RetrieveAPIView):
+    serializer_class = RestaurantSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        return get_object_or_404(Restaurant, id=self.kwargs['rid'])
+
+    def retrieve(self, request, *args, **kwargs):
+        restaurant = get_object_or_404(Restaurant, id=kwargs['rid'])
+        restaurant.liked_by.remove(request.user)
+        return super().retrieve(request, *args, **kwargs)
+
+
 class SearchView(ListCreateAPIView):
     """Retrieves search results data based on the input entered into
     search bar, searches mainly look for a restaurant in the website"""
@@ -227,7 +288,7 @@ class AddCommentView(CreateAPIView):
     """"Add a comment to a restaurant, author refers to the user profile
     that adds the comment."""
     serializer_class = CommentSerializer
-    permission_classes = (IsAuthenticated, )
+    permission_classes = (IsAuthenticated,)
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
@@ -268,5 +329,4 @@ class EditCommentView(RetrieveAPIView, UpdateAPIView):
         except ObjectDoesNotExist:
             raise Http404
         return super().retrieve(request, *args, **kwargs)
-
 

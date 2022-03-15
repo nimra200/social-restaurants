@@ -1,5 +1,5 @@
 from accounts.serializers import ProfileSerializer
-from restaurants.models import Post, Restaurant, FoodItem, Menu, Comment
+from restaurants.models import Post, Restaurant, FoodItem, Menu, RestaurantImage, Comment
 from rest_framework import serializers
 
 
@@ -31,19 +31,30 @@ class PostSerializer(serializers.ModelSerializer):
         fields = ['id', 'title', 'picture', 'topic', 'description', 'created', 'owner_name', 'num_likes']
 
 
+class ImageSerializer(serializers.ModelSerializer):
+    restaurant = serializers.ReadOnlyField(source='restaurant.id')
+    id = serializers.ReadOnlyField()
+
+    class Meta:
+        model = RestaurantImage
+        fields = ['id', 'img', 'restaurant']
+
+
 class RestaurantSerializer(serializers.ModelSerializer):
     owner_id = serializers.ReadOnlyField()
+    id = serializers.ReadOnlyField()
+    num_likes = serializers.IntegerField(source='liked_by.count', read_only=True)
+    images = ImageSerializer(many=True, read_only=True)
 
     class Meta:
         model = Restaurant
-        fields = ['owner_id', 'name', 'phone_number', 'address', 'postal_code', 'email', 'logo']
+        fields = ['id', 'owner_id', 'name', 'phone_number', 'address', 'postal_code', 'email', 'logo', 'num_likes', 'images']
 
     def create(self, validated_data):
         return super().create(validated_data | {'owner': self.context['request'].user})
 
 
 class CommentSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Comment
         fields = ['title', 'text', 'restaurant', 'rating']

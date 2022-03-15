@@ -6,7 +6,7 @@ class IsOwner(permissions.BasePermission):
     message = "You are not this restaurant's owner"
 
     def has_permission(self, request, view):
-        # a generic permission to check if user is a restaurant owner
+        # a generic permission to check if user is a restaurant owner  
 
         if request.method == 'POST' or request.method == 'DELETE':
             if not hasattr(request.user, 'restaurant'):
@@ -15,7 +15,7 @@ class IsOwner(permissions.BasePermission):
         return True
 
     def has_object_permission(self, request, view, obj):
-        # a more specific permission to check if user is the owner of an object
+        # a more specific permission to check if user is the owner of an object  
 
         if isinstance(obj, Post):
             return request.user == obj.owner
@@ -24,6 +24,7 @@ class IsOwner(permissions.BasePermission):
         if isinstance(obj, Comment):
             return request.user == obj.author
         return True
+
 
 class IsAuthor(permissions.BasePermission):
     message = "You did not write this comment"

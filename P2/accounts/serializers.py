@@ -10,12 +10,17 @@ class ProfileSerializer(serializers.ModelSerializer):
 
 
 class NotificationSerializer(serializers.ModelSerializer):
+    from_user = serializers.CharField(source='from_user.username', read_only=True)
+    post = serializers.CharField(source='post.title', read_only=True)
+    restaurant = serializers.CharField(source='restaurant.name', read_only=True)
+
     class Meta:
         model = Notification
-        fields = ['type', 'from_user', 'post', 'date']
+        fields = ['type', 'from_user', 'post', 'restaurant', 'date']
+
 
 class EditProfileSerializer(serializers.ModelSerializer):
-    email = serializers.EmailField(required=False)
+    email = serializers.EmailField()
     profile_picture = serializers.ImageField(required=False)
     phone_number = serializers.CharField(required=False)
 
@@ -45,7 +50,6 @@ class EditProfileSerializer(serializers.ModelSerializer):
 
 
 class RegisterSerializer(serializers.ModelSerializer):
-
     username = serializers.CharField(required=True)
     email = serializers.EmailField(required=True)
     password = serializers.CharField(required=True, write_only=True)
@@ -76,3 +80,4 @@ class RegisterSerializer(serializers.ModelSerializer):
         user.set_password(validated_data['password'])
         user.save()
         return user
+

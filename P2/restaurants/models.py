@@ -1,4 +1,4 @@
-from django.core.validators import MinValueValidator, MaxValueValidator
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.contrib.auth.models import User 
 # Create your models here.
@@ -31,12 +31,14 @@ class Restaurant(models.Model):
     email = models.EmailField()
     logo = models.ImageField(upload_to='restaurant_pictures/')
 
+    liked_by = models.ManyToManyField(UserProfile, related_name='likes_restaurants', blank=True)
+
     def __str__(self):
         return self.name
 
 
 class RestaurantImage(models.Model):
-    img = models.ImageField()
+    img = models.ImageField(upload_to='restaurant_pictures/')
     restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE, related_name='images')
 
 
@@ -57,12 +59,13 @@ class Menu(models.Model):
     def __str__(self):
         return self.menu_name
 
+
 class Comment(models.Model):
-    title = models.CharField(max_length=100, primary_key=True)
+    title = models.CharField(max_length=100)
     text = models.TextField()
-    author = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name="comment")
+    author = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name="comments")
     rating = models.IntegerField(validators=[MaxValueValidator(5), MinValueValidator(1)])
-    restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE, related_name="comment")
+    restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE, related_name="comments")
 
     def __str__(self):
         return self.text
