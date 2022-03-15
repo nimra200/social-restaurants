@@ -54,7 +54,8 @@ class FoodItem(models.Model):
     description = models.TextField()
     price = models.FloatField()
     menu = models.ForeignKey(Menu, related_name="foods", on_delete=models.CASCADE, null=True, blank=True)
-
+    restaurant = models.ForeignKey(Restaurant, related_name="restaurant_food", on_delete=models.CASCADE, null=True, blank=True)
+    
     def __str__(self):
         return self.name
 

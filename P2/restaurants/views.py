@@ -49,10 +49,6 @@ class CreateMenuAPIView(CreateAPIView):
         serializer.save(restaurant=self.request.user.restaurant)
         return super().perform_create(serializer)
 
-class UpdateMenuAPIView(UpdateAPIView):
-    serializer_class = MenuSerializer
-    permission_classes = (IsAuthenticated, IsOwner,)
-    queryset = Menu.objects.all()
 
 class PostsAPIView(ListAPIView):
     """ Return a list of all blog posts made by a restaurant owner."""
@@ -278,7 +274,7 @@ class SearchView(ListCreateAPIView):
     pagination_class = PageNumberPagination
     pagination_class.page_size = 5
     model = Restaurant
-    search_fields = ['name', 'address', 'menu__food__name']
+    search_fields = ['name', 'address', 'restaurant_food__name']
     filter_backends = (filters.SearchFilter,)
     queryset = Restaurant.objects.all().annotate(num_followers=Count('followers')).order_by('-num_followers')
 

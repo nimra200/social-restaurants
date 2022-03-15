@@ -12,7 +12,7 @@ class FoodItemSerializer(serializers.ModelSerializer):
 class MenuSerializer(serializers.ModelSerializer):
     id = serializers.ReadOnlyField()
     restaurant = serializers.CharField(source='restaurant.name', read_only=True)
-    foods = FoodItemSerializer(many=True)
+    foods = FoodItemSerializer(many=True, read_only=True)
 
     class Meta:
         model = Menu
@@ -21,24 +21,24 @@ class MenuSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         foods_data = validated_data.pop('foods')
         menu = Menu.objects.create(**validated_data)
+        restaurant = menu.restaurant
         for food_data in foods_data:
-            FoodItem.objects.create(menu=menu, **food_data)
+            FoodItem.objects.create(menu=menu, restaurant=restaurant, **food_data)
         return menu
 
     def update(self, instance, validated_data):
-        foods_data = validated_data.pop('foods')
-        foods = (instance.foods).all()
-        foods = list(foods)
+        foods_data = validated_data.pop('foods') # new information
+        foods = (instance.foods).all() 
+        foods = list(foods) # the old foods list
         instance.menu_name = validated_data.get('menu_name', instance.menu_name)
-        instance.restaurant = validated_data.get('restaurant', instance.restaurant)
-        instance.save()
-
+        
         for food_data in foods_data:
             food = foods.pop(0)
             food.name = food_data.get('name', food.name)
             food.description = food_data.get('description', food.description)
             food.price = food_data.get('price', food.price)
             food.save()
+        instance.save()
         return instance
 
 class PostSerializer(serializers.ModelSerializer):
