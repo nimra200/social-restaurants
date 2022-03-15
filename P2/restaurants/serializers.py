@@ -12,7 +12,7 @@ class FoodItemSerializer(serializers.ModelSerializer):
 class MenuSerializer(serializers.ModelSerializer):
     id = serializers.ReadOnlyField()
     restaurant = serializers.CharField(source='restaurant.name', read_only=True)
-    foods = FoodItemSerializer(many=True, read_only=True)
+    foods = FoodItemSerializer(many=True)
 
     class Meta:
         model = Menu
