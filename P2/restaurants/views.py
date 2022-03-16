@@ -47,6 +47,15 @@ class CreateMenuAPIView(CreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save(restaurant=self.request.user.restaurant)
+        for user in self.request.user.restaurant.followers.all():
+            # alert following users that menu has changed
+            new_notification = Notification()
+            new_notification.type = 'Update'
+            new_notification.restaurant = self.request.user.restaurant
+            new_notification.to_user = user
+            new_notification.from_user = self.request.user
+            new_notification.save()
+
         return super().perform_create(serializer)
 
 
