@@ -1,0 +1,47 @@
+.flex-container {
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: column;
+
+}
+
+.row {
+    background-color: white;
+    width: 100%;
+    margin: 10px 10px 10px 10px;
+    --bs-gutter-x: 0px;
+}
+
+body {
+    background-image: url('../../../../../wallp.jpg');
+}
+.text {
+    padding: 30px 30px 30px 30px;
+}
+
+.section {
+    width: 100%;
+    background-color: white;
+    text-align: center;
+}
+
+.main {
+    width: 60%;
+    height: 100%;
+}
+
+span {
+    margin-right: 0.7em;
+}
+
+footer {
+    text-align: center;
+    background-color: white;
+
+}
+.column {
+    float: left;
+    width: 50%;
+}
+
+
