@@ -7,3 +7,4 @@ pip install -r requirements.txt
 
 cd ../restify_frontend/
 npm install
+cd ../
