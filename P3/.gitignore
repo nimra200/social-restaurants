@@ -16,3 +16,4 @@ sketch
 __pycache__/
 venv/
 *.pyc
+**/*.pyc
