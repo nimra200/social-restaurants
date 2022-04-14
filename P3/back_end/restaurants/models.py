@@ -41,6 +41,7 @@ class RestaurantImage(models.Model):
     img = models.ImageField(upload_to='restaurant_pictures/')
     restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE, related_name='images')
 
+
 class Menu(models.Model):
     menu_name = models.CharField(max_length=100, unique=True)
     restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
