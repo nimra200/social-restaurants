@@ -25,10 +25,14 @@ class PostSerializer(serializers.ModelSerializer):
     owner_name = serializers.CharField(source='owner.get_full_name', read_only=True)
     id = serializers.ReadOnlyField()
     num_likes = serializers.IntegerField(source='liked_by.count', read_only=True)
+    userLiked = serializers.SerializerMethodField()
 
     class Meta:
         model = Post
-        fields = ['id', 'title', 'picture', 'topic', 'description', 'created', 'owner_name', 'num_likes']
+        fields = ['id', 'title', 'picture', 'topic', 'description', 'created', 'owner_name', 'num_likes', 'userLiked']
+
+    def get_userLiked(self, obj):
+        return self.context['request'].user in obj.liked_by.all()
 
 
 class ImageSerializer(serializers.ModelSerializer):

@@ -2,7 +2,9 @@ import {BrowserRouter, Route, Routes} from "react-router-dom";
 import LoginForm from "../Login";
 import Navbar from "../Navbar";
 import ViewProfile from "../ViewProfile";
-import Post from "../Post";
+import ViewFeed from "../Feed";
+import EditProfile from "../EditProfile";
+import Post from "../Post"
 
 const Router = () => {
     return (
@@ -11,6 +13,8 @@ const Router = () => {
                 <Route path="/" element={<Navbar/>}>
                     <Route path="login" element={<LoginForm/>}/>
                     <Route path="profile/view" element={<ViewProfile/>}/>
+                    <Route path="profile/edit" element={<EditProfile/>}/>
+                    <Route path="profile/my-feed" element={<ViewFeed/>}/>
                     <Route path="post/create" element={<Post/>}/>
                 </Route>
             </Routes>

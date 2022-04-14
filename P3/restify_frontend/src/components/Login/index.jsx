@@ -32,7 +32,7 @@ export default function LoginForm() {
                 if (data) {
                     console.log(data)
                     localStorage.setItem('token', data.access)  // add the access token to local storage
-                    //navigate('hello')
+                    navigate('/profile/view')
                 }
             })
     }
@@ -41,10 +41,10 @@ export default function LoginForm() {
         <>
         <br/><br/><br/><br/>
         <div className="container">
-            <div className="flex-container">
-                <div className="row">
+            <div className="login-flex-container">
+                <div className="row login-row">
                     <div className="text">
-                        <div className ="column">
+                        <div className ="column login-column">
                             <h2>Log In</h2>
                             <br />
                             <form onSubmit={submitHandler}>

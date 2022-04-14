@@ -1,0 +1,41 @@
+.feed-flex-container {
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: column;
+}
+
+.feed-row {
+    background-color: white;
+    width: 90%;
+    margin: 20px 20px 20px 20px;
+    --bs-gutter-x: 0px !important;
+}
+
+.feed-blog_post_container {
+    display: flex;
+    background-color: white; /*purple;*/
+    height: 100%;
+}
+
+
+.feed-text {
+    width: 50%;
+    padding: 30px 30px 30px 30px;
+    position: relative;
+}
+
+
+.feed-img {
+    width: 50%;
+    height: 50%; /* to not stretch image*/
+}
+
+.feed-span {
+    margin-right: 0.7em;
+}
+
+.feed-buttons {
+    position: absolute;
+    bottom: 20px;
+
+}

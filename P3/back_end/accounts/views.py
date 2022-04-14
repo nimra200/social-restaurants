@@ -67,3 +67,11 @@ class EditProfileView(RetrieveAPIView, UpdateAPIView):
 
     def get_object(self):
         return self.request.user
+
+    def put(self, request, *args, **kwargs):
+        phone_number = request.data['phone_number']
+        if len(phone_number) != 10:
+            return Response({'error': 'Invalid phone number'}, status=400)
+
+        return super().put(request, *args, **kwargs)
+

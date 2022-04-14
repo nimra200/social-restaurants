@@ -9,7 +9,7 @@
 }
 
 
-.container {
+.profile-container {
     background-color: white;
     border-radius: 20px;
     margin-top: 105px;
@@ -23,7 +23,7 @@ h1 {
     margin-bottom: 20px;
 }
 
-p {
+.profile-bio {
     margin-top: 20px;
     margin-bottom: 20px;
     color: gray;
@@ -61,7 +61,7 @@ p {
     color: gray;
 }
 
-i {
+.profile-icons {
     color: blue;
     padding-right: 10px;
 }
