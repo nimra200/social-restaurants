@@ -5,6 +5,7 @@ import ViewProfile from "../ViewProfile";
 import ViewFeed from "../Feed";
 import EditProfile from "../EditProfile";
 import Post from "../Post"
+import Menu from "../Menu";
 
 const Router = () => {
     return (
@@ -16,6 +17,7 @@ const Router = () => {
                     <Route path="profile/edit" element={<EditProfile/>}/>
                     <Route path="profile/my-feed" element={<ViewFeed/>}/>
                     <Route path="post/create" element={<Post/>}/>
+                    <Route path="menu/create" element={<Menu/>}/>
                 </Route>
             </Routes>
         </BrowserRouter>

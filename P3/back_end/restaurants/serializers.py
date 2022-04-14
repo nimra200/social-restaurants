@@ -4,35 +4,51 @@ from rest_framework import serializers
 
 
 class FoodItemSerializer(serializers.ModelSerializer):
-    id = serializers.ReadOnlyField()
-
     class Meta:
         model = FoodItem
-        fields = ['id', 'name', 'description', 'price']
+        fields = ['name', 'description', 'price']
 
 
 class MenuSerializer(serializers.ModelSerializer):
     id = serializers.ReadOnlyField()
     restaurant = serializers.CharField(source='restaurant.name', read_only=True)
-    food = serializers.SlugRelatedField(many=True, slug_field='name', queryset=FoodItem.objects.all())
+    foods = FoodItemSerializer(many=True)
 
     class Meta:
         model = Menu
-        fields = ['id', 'menu_name', 'restaurant', 'food']
+        fields = ['id', 'menu_name', 'restaurant', 'foods']
 
+    def create(self, validated_data):
+        foods_data = validated_data.pop('foods')
+        menu = Menu.objects.create(**validated_data)
+        restaurant = menu.restaurant
+        for food_data in foods_data:
+            FoodItem.objects.create(menu=menu, restaurant=restaurant, **food_data)
+        return menu
+
+    def update(self, instance, validated_data):
+        foods_data = validated_data.pop('foods') # new information
+        foods = (instance.foods).all() 
+        foods = list(foods) # the old foods list
+        instance.menu_name = validated_data.get('menu_name', instance.menu_name)
+        
+        for food_data in foods_data:
+            food = foods.pop(0)
+            food.name = food_data.get('name', food.name)
+            food.description = food_data.get('description', food.description)
+            food.price = food_data.get('price', food.price)
+            food.save()
+        instance.save()
+        return instance
 
 class PostSerializer(serializers.ModelSerializer):
     owner_name = serializers.CharField(source='owner.get_full_name', read_only=True)
     id = serializers.ReadOnlyField()
     num_likes = serializers.IntegerField(source='liked_by.count', read_only=True)
-    userLiked = serializers.SerializerMethodField()
 
     class Meta:
         model = Post
-        fields = ['id', 'title', 'picture', 'topic', 'description', 'created', 'owner_name', 'num_likes', 'userLiked']
-
-    def get_userLiked(self, obj):
-        return self.context['request'].user in obj.liked_by.all()
+        fields = ['id', 'title', 'picture', 'topic', 'description', 'created', 'owner_name', 'num_likes']
 
 
 class ImageSerializer(serializers.ModelSerializer):
@@ -42,7 +58,6 @@ class ImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = RestaurantImage
         fields = ['id', 'img', 'restaurant']
-
 
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:
@@ -65,6 +80,5 @@ class RestaurantSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         return super().create(validated_data | {'owner': self.context['request'].user})
-
 
 

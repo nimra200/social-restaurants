@@ -21,12 +21,6 @@ from restaurants.models import Post, Restaurant, FoodItem, Menu, Comment
 
 # Create your views here.
 
-
-class CreateFoodAPIView(CreateAPIView, ListAPIView):
-    serializer_class = FoodItemSerializer
-    queryset = FoodItem.objects.all()
-
-
 class DeleteMenuAPIView(DestroyAPIView):
     serializer_class = MenuSerializer
     permission_classes = (IsAuthenticated, IsOwner,)
@@ -47,12 +41,21 @@ class RetrieveMenuAPIView(RetrieveAPIView):
     queryset = Menu.objects.all()
 
 
-class CreateMenuAPIView(CreateAPIView, ListAPIView):
+class CreateMenuAPIView(CreateAPIView):
     serializer_class = MenuSerializer
     permission_classes = (IsAuthenticated, IsOwner,)
 
     def perform_create(self, serializer):
         serializer.save(restaurant=self.request.user.restaurant)
+        for user in self.request.user.restaurant.followers.all():
+            # alert following users that menu has changed
+            new_notification = Notification()
+            new_notification.type = 'Update'
+            new_notification.restaurant = self.request.user.restaurant
+            new_notification.to_user = user
+            new_notification.from_user = self.request.user
+            new_notification.save()
+
         return super().perform_create(serializer)
 
 
@@ -280,7 +283,7 @@ class SearchView(ListCreateAPIView):
     pagination_class = PageNumberPagination
     pagination_class.page_size = 5
     model = Restaurant
-    search_fields = ['name', 'address', 'menu__food__name']
+    search_fields = ['name', 'address', 'restaurant_food__name']
     filter_backends = (filters.SearchFilter,)
     queryset = Restaurant.objects.all().annotate(num_followers=Count('followers')).order_by('-num_followers')
 
