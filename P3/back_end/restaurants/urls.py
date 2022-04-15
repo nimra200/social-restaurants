@@ -1,7 +1,7 @@
 from restaurants.views import PostsAPIView, CreateRestaurant, UpdateRestaurant, ViewMyRestaurant, FollowRestaurant, \
     CreatePostView, DeletePostView, UnfollowRestaurant, ViewRestaurant, LikePost, UnlikePost, CreateMenuAPIView, \
     RetrieveMenuAPIView, DeleteMenuAPIView, AddImage, LikeRestaurant, UnlikeRestaurant, SearchView, \
-    AddCommentView, EditCommentView, DeleteCommentView
+    AddCommentView, EditCommentView, DeleteCommentView, ViewPost
 from django.urls import path
 
 app_name = "restaurants"
@@ -10,6 +10,7 @@ urlpatterns = [
     path('<int:owner_id>/posts/', PostsAPIView.as_view(), name='posts'),
     path('create-blog-post/', CreatePostView.as_view(), name='create-post'),
     path('<int:pk>/delete-post/', DeletePostView.as_view(), name="delete-post"),
+    path('posts/<int:pid>/view/', ViewPost.as_view(), name="view-post"),
 
     path('create/', CreateRestaurant.as_view(), name='create_restaurant'),
     path('my-restaurant/edit/', UpdateRestaurant.as_view(), name='edit_restaurant'),

@@ -59,6 +59,14 @@ class CreateMenuAPIView(CreateAPIView):
         return super().perform_create(serializer)
 
 
+class ViewPost(RetrieveAPIView):
+    """ Returns a specific post given the post id """
+    serializer_class = PostSerializer
+
+    def get_object(self):
+        return get_object_or_404(Post, id=self.kwargs['pid'])
+
+
 class PostsAPIView(ListAPIView):
     """ Return a list of all blog posts made by a restaurant owner."""
     serializer_class = PostSerializer
