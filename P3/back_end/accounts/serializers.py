@@ -4,9 +4,11 @@ from accounts.models import UserProfile, Notification
 
 
 class ProfileSerializer(serializers.ModelSerializer):
+    id = serializers.ReadOnlyField()
+
     class Meta:
         model = UserProfile
-        fields = ['first_name', 'last_name', 'username', 'email', 'phone_number', 'profile_picture', 'following']
+        fields = ['id', 'first_name', 'last_name', 'username', 'email', 'phone_number', 'profile_picture', 'following']
 
 
 class NotificationSerializer(serializers.ModelSerializer):
