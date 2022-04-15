@@ -47,13 +47,19 @@ class PostSerializer(serializers.ModelSerializer):
     id = serializers.ReadOnlyField()
     num_likes = serializers.IntegerField(source='liked_by.count', read_only=True)
     userLiked = serializers.SerializerMethodField()
+    owner_id = serializers.CharField(read_only=True)
+    restaurant_id = serializers.SerializerMethodField()
 
     class Meta:
         model = Post
-        fields = ['id', 'title', 'picture', 'topic', 'description', 'created', 'owner_name', 'num_likes', 'userLiked']
+        fields = ['id', 'title', 'picture', 'topic', 'description', 'created', 'owner_name', 'num_likes', 'userLiked',
+                  'owner_id', 'restaurant_id']
 
     def get_userLiked(self, obj):
         return self.context['request'].user in obj.liked_by.all()
+
+    def get_restaurant_id(self, obj):
+        return self.context['request'].user.restaurant.id
 
 
 class ImageSerializer(serializers.ModelSerializer):
