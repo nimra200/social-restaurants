@@ -56,10 +56,12 @@ class PostSerializer(serializers.ModelSerializer):
                   'owner_id', 'restaurant_id']
 
     def get_userLiked(self, obj):
-        return self.context['request'].user in obj.liked_by.all()
+        if hasattr(self.context['request'], 'user'):
+            return self.context['request'].user in obj.liked_by.all()
+        return False
 
     def get_restaurant_id(self, obj):
-        return self.context['request'].user.restaurant.id
+        return obj.owner.restaurant.id
 
 
 class ImageSerializer(serializers.ModelSerializer):
