@@ -1,4 +1,5 @@
 import { useState } from "react";
+import 'bootstrap/dist/css/bootstrap.css';
 /* TODO: Add a delete feature */ 
 export default function CreateMenu(){
     const [name, setName] = useState("");
@@ -8,7 +9,7 @@ export default function CreateMenu(){
         event.preventDefault();
         setFood([...food, {}])
     };
-
+    
     
     const submitHandler = (event) => {
         event.preventDefault();
@@ -41,13 +42,22 @@ export default function CreateMenu(){
     }
 
     return (<>
-        <div style={{backgroundColor : "white", margin : "5%"}}>
+        <div style={{color:"white"}} className="jumbotron text-center">
+            <h1 style={{marginTop: "5%"}}>Create Your Restaurant's Menu</h1>
+            <p><em>Add new menu items. </em></p>
+        </div>
+
+        <div  style={{backgroundColor: "white", padding: "2%"}} className="container" >
             <form onSubmit={submitHandler}>
-                <label>Enter Menu Name</label>
-                <input type="text" name="name" value={name} 
-                onChange={e => setName(e.target.value)}/>
+                <div style={{padding: "2%" , textAlign: "center"}}>
+                    <label>Enter Menu Name: 
+                    <input type="text" name="name" value={name} 
+                        onChange={e => setName(e.target.value)}/>
+                    </label>
+                </div>
                 
-                <table>
+                <table style={{marginLeft: "auto", marginRight : "auto"}}>
+                
                     <thead>
                         <tr>
                             <th>Food Name</th>
@@ -87,13 +97,27 @@ export default function CreateMenu(){
                                                 setFood(new_food);}}/>
                                     
                                 </td>
+                                <td>
+                                    <button onClick={(event) => {
+                                                    event.preventDefault();
+                                                    const updated_food = [...food];
+                                                    updated_food.splice(index, 1);
+                                                    setFood(updated_food);
+            
+                                                }}>Remove</button>
+                                </td> 
                             </tr>
                         ))}
                     </tbody>
+                    <button onClick={handleAddRow}>Add Menu Item</button>
                 </table>
-                <button onClick={handleAddRow}>Add Menu Item</button>
-                <br></br><br></br>
+                
+               
+                
+                <div style={{textAlign: "center", padding: "2%"}}>
                 <input type="submit" className="text-center btn btn-dark" style={{width:"10%"}} value="Submit!"/>
+                </div>
+                
             </form>
         </div>
         

@@ -47,7 +47,7 @@ export default function CreatePost(){
         </div>
         
         <form onSubmit={submitHandler} encType="multipart/form-data">
-            <div style={{padding: "2%"}} className="container">
+            <div style={{padding: "2%", backgroundColor : "white"}} className="container">
                 <div className="row">
                     
                         <label for="title">Blog Title:
@@ -56,17 +56,17 @@ export default function CreatePost(){
                             onChange={e => setInputs({...inputs, title: e.target.value})}
                             />
                         </label>
-                        <br></br><br></br>
+                        
                 </div>        
-                <div className="row">
+                <div className="row" style={{paddingTop: "2%"}}>
                     <label for="file">Attach media to blog post
                         <input type="file" name="file" className="form-control"
                         onChange={e => setInputs({...inputs, picture: e.target.files[0]})}/>
-                    </label> <br></br>
+                    </label> 
                 </div>        
 
             
-                        <div className="row">
+                        <div className="row" style={{paddingTop: "2%"}}>
                             <label for="topic" style={{alignItems: "center"}} >Topic:
                                 <input type="text" name="topic" className="form-control" 
                                 value={inputs.topic}
@@ -87,8 +87,10 @@ export default function CreatePost(){
                             
                         
                     </div>
-                
-                    <input type="submit" className="text-center btn btn-dark" style={{width:"10%"}} value="Publish!"/>
+                    
+                    <div style={{padding: "2%", textAlign : "center"}}>
+                    <input type="submit" className="text-center btn btn-dark"  value="Publish!"/>
+                    </div>
             </div>
         
         
