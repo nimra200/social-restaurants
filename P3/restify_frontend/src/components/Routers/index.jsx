@@ -6,6 +6,7 @@ import ViewFeed from "../Feed";
 import EditProfile from "../EditProfile";
 import Post from "../Post"
 import Menu from "../Menu";
+import RestaurantPosts from "../RestaurantPosts";
 
 const Router = () => {
     return (
@@ -18,6 +19,7 @@ const Router = () => {
                     <Route path="profile/my-feed" element={<ViewFeed/>}/>
                     <Route path="post/create" element={<Post/>}/>
                     <Route path="menu/create" element={<Menu/>}/>
+                    <Route path=":rid/posts/view/" element={<RestaurantPosts/>}/>
                 </Route>
             </Routes>
         </BrowserRouter>

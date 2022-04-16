@@ -1,52 +1,15 @@
-import {useCallback, useEffect, useRef, useState} from "react";
-import './style.css'
+import { useState, handle, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import LikeButton from "../LikeButton";
 import UnlikeButton from "../UnlikeButton";
+import "../Feed/style.css"
 
-export default function ViewFeed() {
-    const [data, setData] = useState({results: []})
-    const [pageNumber, setPageNumber] = useState(1)
-    const [loading, setLoading] = useState(true)
-    const [hasMore, setHasMore] = useState(false)
+export default function RestaurantPosts(){
+    const [posts, setPosts] = useState({results: []});
+    const [name, setName] = useState("");
+    const { rid } = useParams()
 
-    useEffect(() =>  {
-        document.title = "My Feed"
-    }, [])
-
-    const observer = useRef()
-
-    const lastPostElementRef = useCallback(node => {
-        if (loading) return
-        if (observer.current) observer.current.disconnect()
-        observer.current = new IntersectionObserver(entries => {
-            if (entries[0].isIntersecting && hasMore) {
-                console.log('at bottom')
-                setPageNumber(prevPageNumber => prevPageNumber + 1)
-            }
-        })
-        if (node) observer.current.observe(node)
-    }, [loading, hasMore])
-
-
-    useEffect(() => {
-        setLoading(true)
-        fetch(`http://localhost:8000/accounts/profile/my-feed/?page=${pageNumber}`, {
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${localStorage.getItem('token')}`
-            }
-        })
-            .then(res => res.json())
-            .then(json => {
-                const new_res = [...new Set([...data.results, ...json.results])]
-                const new_data = {results: new_res}
-                setData({...data, ...new_data})
-                setHasMore(json.next !== null)
-                setLoading(false)
-            })
-    }, [pageNumber])
-
-
+        
     const likeBtnClicked = id => {
         fetch(`http://localhost:8000/restaurants/post/${id}/like/`, {
             method: 'GET',
@@ -56,11 +19,11 @@ export default function ViewFeed() {
         })
             .then(res => res.json())
             .then(json => {
-                const posts = [...data.results]
-                const post = posts.filter(c => c.id === id)[0]
+                const data = [...posts.results]
+                const post = data.filter(c => c.id === id)[0]
                 post.num_likes = json.num_likes
                 post.userLiked = json.userLiked
-                setData({...data, results: posts})
+                setPosts({...posts, results: data})
             })
     }
 
@@ -74,11 +37,11 @@ export default function ViewFeed() {
         })
             .then(res => res.json())
             .then(json => {
-                const posts = [...data.results]
-                const post = posts.filter(c => c.id === id)[0]
+                const data = [...posts.results]
+                const post = data.filter(c => c.id === id)[0]
                 post.num_likes = json.num_likes
                 post.userLiked = json.userLiked
-                setData({...data, results: posts})
+                setPosts({...posts, results: data})
             })
     }
 
@@ -90,19 +53,40 @@ export default function ViewFeed() {
         return `${mo} ${da}, ${ye}`
     }
 
+    useEffect(() =>  {
+        fetch(`http://localhost:8000/restaurants/${rid}/view/`, 
+        {
+            method: "GET"
+        })
+        .then(res => res.json())
+        .then(json => {
+            var restaurantOwner = json["id"];
+            setName(json["name"]);
+            return fetch(`http://localhost:8000/restaurants/${restaurantOwner}/posts/`, 
+            {
+                method: "GET",
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`  // get auth key from local storage
+                }
+            })
+        })
+        .then(res => res.json())
+        .then(data => {
+            setPosts(data);
+            })
+    }, [rid])
 
-    console.log(data)
-
+    
     return (
-        <>
-            <div className="jumbotron text-center">
-                <h1 className='title'>My Feed</h1>
-            </div>
-
-            <div className="container">
+        <> 
+        <div style={{backgroundColor: "blue"}} className="jumbotron text-center">
+                <h1 className='title'> Welcome to the blog for <em>{name}</em></h1>
+        </div>
+        
+        <div className="container">
                 <div className="feed-flex-container">
-                    {data.results.map((post, index) => (
-                        <div ref={data.results.length === index + 1 ? lastPostElementRef : null} key={post.id} className="row feed-row">
+                    {posts.results.map((post, index) => (
+                        <div key={post.id} className="row feed-row">
                             <div className="feed-blog_post_container">
                                 {post.picture ?
                                     <img className="feed-img"
@@ -113,7 +97,7 @@ export default function ViewFeed() {
                                     <h3> {post.title} </h3>
                                     <span className="feed-span"> <i className="fa fa-calendar"></i> {format_date(post.created)}</span>
                                     <span className="feed-span"> <i className="fa fa-folder"></i> {post.topic}</span>
-                                    <span className="feed-span"> <i className="fa fa-comment"></i> 2 Comments</span>
+        
                                     <span className="feed-span"> <i className="fa fa-heart"></i> {post.num_likes}
                                         {post.num_likes===1 ? ' Like' : ' Likes'} </span>
                                     <br/><br/>
@@ -130,10 +114,8 @@ export default function ViewFeed() {
                     ))}</div>
                 </div>
 
-            <div style={{textAlign: "center"}}>{loading && 'Loading...'}</div>
-
-
+            
+        
         </>
-)
-
+    )
 }
