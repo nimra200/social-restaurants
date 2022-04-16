@@ -38,7 +38,10 @@ class DeleteMenuAPIView(DestroyAPIView):
 
 class RetrieveMenuAPIView(RetrieveAPIView):
     serializer_class = MenuSerializer
-    queryset = Menu.objects.all()
+    
+    def get_queryset(self):
+        restaurant = get_object_or_404(Restaurant, id=self.kwargs['pk'])
+        return Menu.objects.filter(restaurant=restaurant)
 
 
 class CreateMenuAPIView(CreateAPIView):

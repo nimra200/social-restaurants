@@ -7,7 +7,7 @@ import "../Feed/style.css"
 export default function RestaurantPosts(){
     const [posts, setPosts] = useState({results: []});
     const [name, setName] = useState("");
-    const { rid } = useParams()
+    const { restaurantid } = useParams()
 
         
     const likeBtnClicked = id => {
@@ -54,7 +54,7 @@ export default function RestaurantPosts(){
     }
 
     useEffect(() =>  {
-        fetch(`http://localhost:8000/restaurants/${rid}/view/`, 
+        fetch(`http://localhost:8000/restaurants/${restaurantid}/view/`, 
         {
             method: "GET"
         })
@@ -74,7 +74,7 @@ export default function RestaurantPosts(){
         .then(data => {
             setPosts(data);
             })
-    }, [rid])
+    }, [restaurantid])
 
     
     return (

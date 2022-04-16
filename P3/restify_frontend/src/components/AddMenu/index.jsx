@@ -1,7 +1,7 @@
 import { useState } from "react";
 import 'bootstrap/dist/css/bootstrap.css';
 /* TODO: Add a delete feature */ 
-export default function CreateMenu(){
+export default function AddMenu(){
     const [name, setName] = useState("");
     const [food, setFood] = useState([{}]);
 
