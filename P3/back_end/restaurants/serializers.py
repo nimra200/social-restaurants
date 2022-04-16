@@ -47,13 +47,21 @@ class PostSerializer(serializers.ModelSerializer):
     id = serializers.ReadOnlyField()
     num_likes = serializers.IntegerField(source='liked_by.count', read_only=True)
     userLiked = serializers.SerializerMethodField()
+    owner_id = serializers.CharField(read_only=True)
+    restaurant_id = serializers.SerializerMethodField()
 
     class Meta:
         model = Post
-        fields = ['id', 'title', 'picture', 'topic', 'description', 'created', 'owner_name', 'num_likes', 'userLiked']
+        fields = ['id', 'title', 'picture', 'topic', 'description', 'created', 'owner_name', 'num_likes', 'userLiked',
+                  'owner_id', 'restaurant_id']
 
     def get_userLiked(self, obj):
-        return self.context['request'].user in obj.liked_by.all()
+        if hasattr(self.context['request'], 'user'):
+            return self.context['request'].user in obj.liked_by.all()
+        return False
+
+    def get_restaurant_id(self, obj):
+        return obj.owner.restaurant.id
 
 
 class ImageSerializer(serializers.ModelSerializer):
@@ -78,11 +86,17 @@ class RestaurantSerializer(serializers.ModelSerializer):
     num_followers = serializers.IntegerField(source='followers.count', read_only=True)
     images = ImageSerializer(many=True, read_only=True)
     comments = CommentSerializer(many=True, read_only=True)
+    userLiked = serializers.SerializerMethodField()
 
     class Meta:
         model = Restaurant
         fields = ['id', 'owner_id', 'name', 'phone_number', 'address', 'postal_code', 'email', 'logo', 'num_likes',
-                  'num_followers', 'images', 'comments']
+                  'num_followers', 'userLiked', 'images', 'comments']
+
+    def get_userLiked(self, obj):
+        if hasattr(self.context['request'], 'user'):
+            return self.context['request'].user in obj.liked_by.all()
+        return False
 
     def create(self, validated_data):
         return super().create(validated_data | {'owner': self.context['request'].user})

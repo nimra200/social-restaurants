@@ -2,7 +2,7 @@ from django.shortcuts import render
 
 # Create your views here.
 from rest_framework import permissions
-from rest_framework.generics import RetrieveAPIView, ListAPIView, UpdateAPIView, CreateAPIView
+from rest_framework.generics import RetrieveAPIView, ListAPIView, UpdateAPIView, CreateAPIView, get_object_or_404
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -19,6 +19,14 @@ class ViewProfile(RetrieveAPIView):
 
     def get_object(self):
         return self.request.user
+
+
+class GetProfile(RetrieveAPIView):
+    """Get profile by id"""
+    serializer_class = ProfileSerializer
+
+    def get_object(self):
+        return get_object_or_404(UserProfile, id=self.kwargs['uid'])
 
 
 class GetNotifications(ListAPIView):
