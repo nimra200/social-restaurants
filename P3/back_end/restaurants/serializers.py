@@ -74,9 +74,11 @@ class ImageSerializer(serializers.ModelSerializer):
 
 
 class CommentSerializer(serializers.ModelSerializer):
+    author = serializers.ReadOnlyField(source='author.get_full_name')
+
     class Meta:
         model = Comment
-        fields = ['title', 'text', 'restaurant', 'rating']
+        fields = ['title', 'text', 'restaurant', 'rating', 'author']
 
 
 class RestaurantSerializer(serializers.ModelSerializer):
