@@ -1,9 +1,11 @@
 import { useState } from "react";
 import 'bootstrap/dist/css/bootstrap.css';
-
+import { useNavigate } from "react-router-dom";
 
 export default function CreatePost(){
     const [inputs, setInputs] = useState({});
+
+    let navigate = useNavigate();
 
     const submitHandler = (event) => {
         event.preventDefault();
@@ -25,16 +27,12 @@ export default function CreatePost(){
             .then(res => {
                 if (res.ok)
                     return res.json()
-                else
-                    console.log(res.body)
             })
             .then(data => {
                 if (data) {
-                    console.log(data)
+                    navigate(`/${data.restaurant_id}/posts/view`)
                 }
             })
-          
-        
     }
    
         
@@ -51,7 +49,7 @@ export default function CreatePost(){
                 <div className="row">
                     
                         <label for="title">Blog Title:
-                            <input type="text" name="title" value={inputs.title} 
+                            <input required type="text" name="title" value={inputs.title} 
                             className="form-control" size="40"
                             onChange={e => setInputs({...inputs, title: e.target.value})}
                             />
@@ -60,7 +58,7 @@ export default function CreatePost(){
                 </div>        
                 <div className="row" style={{paddingTop: "2%"}}>
                     <label for="file">Attach media to blog post
-                        <input type="file" name="file" className="form-control"
+                        <input required type="file" name="file" className="form-control"
                         onChange={e => setInputs({...inputs, picture: e.target.files[0]})}/>
                     </label> 
                 </div>        
@@ -68,14 +66,14 @@ export default function CreatePost(){
             
                         <div className="row" style={{paddingTop: "2%"}}>
                             <label for="topic" style={{alignItems: "center"}} >Topic:
-                                <input type="text" name="topic" className="form-control" 
+                                <input required type="text" name="topic" className="form-control" 
                                 value={inputs.topic}
                                 onChange={e => setInputs({...inputs, topic: e.target.value})}/><br></br>
                             </label>
                         </div>
                         
                     
-                    <div class="row">
+                    <div className="row">
                         
                             <label for="description">Blog entry:
                                 <textarea name="description" rows="4" className="form-control"
@@ -93,16 +91,7 @@ export default function CreatePost(){
                     </div>
             </div>
         
-        
-        
-            
-            
-        
         </form>
-       
-       
-       
-        
     </>)
 
 }
