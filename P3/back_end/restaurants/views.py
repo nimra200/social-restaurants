@@ -159,11 +159,11 @@ class UpdateRestaurant(RetrieveAPIView, UpdateAPIView):
 
 
 class FollowRestaurant(RetrieveAPIView):
-    serializer_class = ProfileSerializer
+    serializer_class = RestaurantSerializer
     permission_classes = [IsAuthenticated]
 
     def get_object(self):
-        return self.request.user
+        return get_object_or_404(Restaurant, id=self.kwargs['rid'])
 
     def retrieve(self, request, *args, **kwargs):
         restaurant = get_object_or_404(Restaurant, id=kwargs['rid'])
@@ -183,11 +183,11 @@ class FollowRestaurant(RetrieveAPIView):
 
 
 class UnfollowRestaurant(RetrieveAPIView):
-    serializer_class = ProfileSerializer
+    serializer_class = RestaurantSerializer
     permission_classes = [IsAuthenticated]
 
     def get_object(self):
-        return self.request.user
+        return get_object_or_404(Restaurant, id=self.kwargs['rid'])
 
     def retrieve(self, request, *args, **kwargs):
         restaurant = get_object_or_404(Restaurant, id=kwargs['rid'])
