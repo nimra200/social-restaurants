@@ -8,7 +8,8 @@ class ProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserProfile
-        fields = ['id', 'first_name', 'last_name', 'username', 'email', 'phone_number', 'profile_picture', 'following']
+        fields = ['id', 'first_name', 'last_name', 'username', 'email', 'phone_number', 'profile_picture', 'following',
+                'restaurant']
 
 
 class NotificationSerializer(serializers.ModelSerializer):

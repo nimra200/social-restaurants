@@ -15,6 +15,7 @@ const Router = () => {
             <Routes>
                 <Route path="/" element={<Navbar/>}>
                     <Route path="login" element={<LoginForm/>}/>
+                    <Route path="register" element={<Signup/>}/>
                     <Route path="profile/view" element={<ViewProfile/>}/>
                     <Route path="profile/edit" element={<EditProfile/>}/>
                     <Route path="profile/my-feed" element={<ViewFeed/>}/>
@@ -23,6 +24,10 @@ const Router = () => {
                     <Route path=":restaurantid/menu/view" element={<ViewMenu/>}/>
                     <Route path=":restaurantid/posts/view" element={<RestaurantPosts/>}/>
                     
+                    <Route path="search" element={<Searchresults/>}/>
+                    
+                    
+                    <Route path=":rid/posts/view/" element={<RestaurantPosts/>}/>
                 </Route>
             </Routes>
         </BrowserRouter>

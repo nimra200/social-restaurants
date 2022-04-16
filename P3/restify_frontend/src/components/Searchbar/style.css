@@ -1,0 +1,10 @@
+input {
+    width: 200;
+    height: 40;
+    fontSize: '2em';
+}
+
+.box {
+    text-align: center;
+    margin: auto;
+}

@@ -180,6 +180,7 @@ class FollowRestaurant(RetrieveAPIView):
         new_notification.type = 'Follow'
         new_notification.to_user = restaurant.owner
         new_notification.from_user = request.user
+        new_notification.restaurant = restaurant
         new_notification.save()
 
         return super().retrieve(request, *args, **kwargs)
