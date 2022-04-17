@@ -8,40 +8,65 @@ export default function ViewMenu(){
     const [restaurant, setRestaurant] = useState({})
     const [userData, setUserData] = useState({})
     const [loggedIn, setLoggedIn] = useState(false)
+    const [noMenu, setNoMenu] = useState(false)
 
     let navigate = useNavigate()
+
+    useEffect(() => {
+        if(localStorage.getItem('token')) setLoggedIn(true)
+        else setLoggedIn(false)
+    }, [])
+
+    useEffect(() => {
+        if(loggedIn) {
+            fetch('http://localhost:8000/accounts/profile/view/', {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            })
+                .then(res => res.json())
+                .then(json => setUserData(json))
+        }
+    }, [loggedIn])
     
     useEffect(() => {
-        
-        if (localStorage.getItem('token')) {
-            setLoggedIn(true)
-        }
+
         fetch(`http://localhost:8000/restaurants/view-menu/${restaurantid}/`,
             {method: "GET"})
-            .then(res => res.json())
+            .then(res => {
+                if(!res.ok) setNoMenu(true)
+                return res.json()
+            })
             .then(json => {
                 if (json.menu_name)
                     setMenu(json)
-                else
-                    navigate("/restaurants/my-restaurant/create-menu")
+                else {
+                    if(userData.restaurant === parseInt(restaurantid))    // user owns the restaurant
+                        navigate("/restaurants/my-restaurant/create-menu")
+                }
             })
+
         fetch(`http://localhost:8000/restaurants/${restaurantid}/view/`,
             {method:"GET"})
             .then(res => res.json())
             .then(json => setRestaurant(json))
-            
-        if(loggedIn) {
-                fetch('http://localhost:8000/accounts/profile/view/', {
-                    method: 'GET',
-                    headers: {
-                        'Authorization': `Bearer ${localStorage.getItem('token')}`
-                    }
-                })
-                    .then(res => res.json())
-                    .then(json => setUserData(json))
-            } 
 
-    }, [restaurantid, loggedIn])
+    }, [userData])
+
+    if(noMenu) {
+        if (userData.restaurant === parseInt(restaurantid)) {
+            navigate("/restaurants/my-restaurant/create-menu")
+            return
+        }
+        return (
+            <div style={{backgroundColor: "blue", color:"white"}} className="jumbotron text-center">
+                <h1 style={{marginTop: "5%"}}>User has no menu!</h1>
+            </div>
+        )
+    }
+
+
     return (<>
         <div style={{backgroundColor: "blue", color:"white"}} className="jumbotron text-center">
             <h1 style={{marginTop: "5%"}}>Menu for {menu.restaurant}</h1>
