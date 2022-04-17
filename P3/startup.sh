@@ -6,5 +6,5 @@ pip install -r requirements.txt
 ./manage.py migrate
 
 cd ../restify_frontend/
-npm install
+npm install --force
 cd ../
