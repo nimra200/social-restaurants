@@ -2,14 +2,13 @@ import { useState, handle, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import LikeButton from "../LikeButton";
 import UnlikeButton from "../UnlikeButton";
-import "../Feed/style.css"
 
 export default function RestaurantPosts(){
     const [posts, setPosts] = useState({results: []});
     const [name, setName] = useState("");
     const { restaurantid } = useParams()
 
-        
+
     const likeBtnClicked = id => {
         fetch(`http://localhost:8000/restaurants/post/${id}/like/`, {
             method: 'GET',
@@ -54,36 +53,36 @@ export default function RestaurantPosts(){
     }
 
     useEffect(() =>  {
-        fetch(`http://localhost:8000/restaurants/${restaurantid}/view/`, 
-        {
-            method: "GET"
-        })
-        .then(res => res.json())
-        .then(json => {
-            var restaurantOwner = json["id"];
-            setName(json["name"]);
-            return fetch(`http://localhost:8000/restaurants/${restaurantOwner}/posts/`, 
+        fetch(`http://localhost:8000/restaurants/${restaurantid}/view/`,
             {
-                method: "GET",
-                headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`  // get auth key from local storage
-                }
+                method: "GET"
             })
-        })
-        .then(res => res.json())
-        .then(data => {
-            setPosts(data);
+            .then(res => res.json())
+            .then(json => {
+                var restaurantOwner = json["id"];
+                setName(json["name"]);
+                return fetch(`http://localhost:8000/restaurants/${restaurantOwner}/posts/`,
+                    {
+                        method: "GET",
+                        headers: {
+                            'Authorization': `Bearer ${localStorage.getItem('token')}`  // get auth key from local storage
+                        }
+                    })
+            })
+            .then(res => res.json())
+            .then(data => {
+                setPosts(data);
             })
     }, [restaurantid])
 
-    
+
     return (
-        <> 
-        <div style={{backgroundColor: "blue"}} className="jumbotron text-center">
+        <>
+            <div style={{backgroundColor: "blue"}} className="jumbotron text-center">
                 <h1 className='title'> Welcome to the blog for <em>{name}</em></h1>
-        </div>
-        
-        <div className="container">
+            </div>
+
+            <div className="container">
                 <div className="feed-flex-container">
                     {posts.results.map((post, index) => (
                         <div key={post.id} className="row feed-row">
@@ -97,7 +96,7 @@ export default function RestaurantPosts(){
                                     <h3> {post.title} </h3>
                                     <span className="feed-span"> <i className="fa fa-calendar"></i> {format_date(post.created)}</span>
                                     <span className="feed-span"> <i className="fa fa-folder"></i> {post.topic}</span>
-        
+
                                     <span className="feed-span"> <i className="fa fa-heart"></i> {post.num_likes}
                                         {post.num_likes===1 ? ' Like' : ' Likes'} </span>
                                     <br/><br/>
@@ -112,10 +111,10 @@ export default function RestaurantPosts(){
 
                         </div>
                     ))}</div>
-                </div>
+            </div>
 
-            
-        
+
+
         </>
     )
 }
