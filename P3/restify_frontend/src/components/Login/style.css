@@ -12,11 +12,9 @@
     --bs-gutter-x: 0px;
 }
 
-
 body {
     background-image: url('../../wallp.jpg');
 }
-
 .text {
     padding: 30px 30px 30px 30px;
 }

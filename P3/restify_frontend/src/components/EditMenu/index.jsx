@@ -49,7 +49,7 @@ export default function EditMenu(){
                         })
                     .then(res => {
                         if(res.ok)
-                            navigate(`/${restaurantid}/menu/view`)
+                            navigate(`/restaurants/${restaurantid}/menu/view`)
                     })
                 }
                 else

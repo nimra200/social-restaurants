@@ -75,7 +75,6 @@ class PostsAPIView(ListAPIView):
     """ Return a list of all blog posts made by a restaurant owner."""
     serializer_class = PostSerializer
     model = Post
-    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         owner = get_object_or_404(UserProfile, id=self.kwargs['owner_id'])

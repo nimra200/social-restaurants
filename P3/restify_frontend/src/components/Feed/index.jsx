@@ -2,6 +2,7 @@ import {useCallback, useEffect, useRef, useState} from "react";
 import './style.css'
 import LikeButton from "../LikeButton";
 import UnlikeButton from "../UnlikeButton";
+import {useNavigate} from "react-router-dom";
 
 export default function ViewFeed() {
     const [data, setData] = useState({results: []})
@@ -9,8 +10,10 @@ export default function ViewFeed() {
     const [loading, setLoading] = useState(true)
     const [hasMore, setHasMore] = useState(false)
 
+    let navigate = useNavigate()
     useEffect(() =>  {
         document.title = "My Feed"
+        if(!localStorage.getItem('token')) navigate('/login')
     }, [])
 
     const observer = useRef()
@@ -113,16 +116,15 @@ export default function ViewFeed() {
                                     <h3> {post.title} </h3>
                                     <span className="feed-span"> <i className="fa fa-calendar"></i> {format_date(post.created)}</span>
                                     <span className="feed-span"> <i className="fa fa-folder"></i> {post.topic}</span>
-                                    <span className="feed-span"> <i className="fa fa-comment"></i> 2 Comments</span>
                                     <span className="feed-span"> <i className="fa fa-heart"></i> {post.num_likes}
                                         {post.num_likes===1 ? ' Like' : ' Likes'} </span>
                                     <br/><br/>
                                     <p>{post.description}</p>
                                     <br/>
 
-                                    {post.userLiked ? <UnlikeButton unlike_fn={() => unlikeBtnClicked(post.id)}/> :
-                                        <LikeButton like_fn={() => likeBtnClicked(post.id)}/>}
-                                    <a className="feed-buttons btn btn-link" style={{marginLeft: '100px'}} href="#" role="button">Read More</a>
+                                    {post.userLiked ? <UnlikeButton classname="feed-buttons btn btn-primary" unlike_fn={() => unlikeBtnClicked(post.id)}/> :
+                                        <LikeButton classname="feed-buttons btn btn-primary" like_fn={() => likeBtnClicked(post.id)}/>}
+                                    <a className="feed-buttons btn btn-link" style={{marginLeft: '100px'}} href={`/post/${post.id}/view`} role="button">Read More</a>
                                 </div>
                             </div>
 

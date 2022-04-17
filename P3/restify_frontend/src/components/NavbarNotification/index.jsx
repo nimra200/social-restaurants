@@ -31,5 +31,22 @@ export default function NavbarNotification({notification}) {
         return <NavDropdown.Item>{`${notification.restaurant} created a new post: `} <u>{notification.post}</u>
             {` ${calculate_time(notification.date)} ago`}</NavDropdown.Item>
     }
-    return <NavDropdown.Item>Notificaiton test</NavDropdown.Item>
+    if (notification.type === 'Like') {
+        return <NavDropdown.Item>{`${notification.from_user} liked your restaurant `} <u>{notification.restaurant}</u>
+            {` ${calculate_time(notification.date)} ago`}</NavDropdown.Item>
+    }
+    if (notification.type === 'Follow') {
+        return <NavDropdown.Item>{`${notification.from_user} followed your restaurant `} <u>{notification.restaurant}</u>
+            {` ${calculate_time(notification.date)} ago`}</NavDropdown.Item>
+    }
+    if (notification.type === 'Update') {
+        return <NavDropdown.Item>{`${notification.restaurant} updated their menu `}
+            {` ${calculate_time(notification.date)} ago`}</NavDropdown.Item>
+    }
+    if (notification.type === 'Comment') {
+        return <NavDropdown.Item>{`${notification.from_user} commented on your restaurant `} <u>{notification.restaurant}</u>
+            {` ${calculate_time(notification.date)} ago`}</NavDropdown.Item>
+    }
+
+    return <NavDropdown.Item>Error missing</NavDropdown.Item>
 }
