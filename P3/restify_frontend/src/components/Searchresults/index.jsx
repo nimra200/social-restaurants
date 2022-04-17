@@ -20,27 +20,29 @@ const Searchresults = () => {
     <>
     <Searchbar value={query.search}
              update={(value) => setQuery({search: value, page: 1})}/>
+                    
+            <div class="text">
+                {results.map(result => (
+                    <div>
+                        <div class="row">
+                            <div class="column">
+                                <h5><u> {result.name} </u></h5>
+                                <br></br>
+                                <p> {result.phone_number} </p>
+                                <br></br>
+                                <p> {result.address} </p>
+                                <br></br>
+                                <p> {result.email} </p>
+                            </div>
 
-                      <div class="text">
-                          {results.map(result => (
-                          <div class="row">
-                          <div class="column">
-                              <h5><u> {result.name} </u></h5>
-                              <br/>
-                              <p> {result.phone_number} </p>
-                              <br/>
-                              <p> {result.address} </p>
-                              <br/>
-                              <p> {result.email} </p>
-                          </div>
+                            <div class="column">
+                                <img src={result.logo} />
+                            </div>
 
-                          <div class="column">
-                            <img src={result.logo} />
-                          </div>
-
-                         </div>
-                         <hr class="accent" />
-                      ))}
+                        </div>
+                        <hr class="accent" />
+                    </div>
+                ))}
 
                  </div>
 

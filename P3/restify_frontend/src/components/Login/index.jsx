@@ -47,6 +47,7 @@ export default function LoginForm() {
                     if (data) {
                         console.log(data)
                         localStorage.setItem('token', data.access)  // add the access token to local storage
+                        navigate('/profile/view')
                         //navigate('hello')
                     }
                 })

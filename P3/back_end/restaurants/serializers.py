@@ -12,11 +12,15 @@ class FoodItemSerializer(serializers.ModelSerializer):
 class MenuSerializer(serializers.ModelSerializer):
     id = serializers.ReadOnlyField()
     restaurant = serializers.CharField(source='restaurant.name', read_only=True)
+    restaurant_id = serializers.SerializerMethodField()
     foods = FoodItemSerializer(many=True)
 
     class Meta:
         model = Menu
-        fields = ['id', 'menu_name', 'restaurant', 'foods']
+        fields = ['id', 'menu_name', 'restaurant', 'restaurant_id', 'foods']
+    
+    def get_restaurant_id(self, obj):
+        return obj.restaurant.id
 
     def create(self, validated_data):
         foods_data = validated_data.pop('foods')

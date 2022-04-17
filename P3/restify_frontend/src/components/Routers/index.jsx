@@ -8,6 +8,8 @@ import CreatePost from "../Post"
 import AddMenu from "../AddMenu";
 import RestaurantPosts from "../RestaurantPosts";
 import ViewMenu from "../ViewMenu";
+import Signup from "../Signup";
+import Searchresults from "../Searchresults";
 
 const Router = () => {
     return (
@@ -27,7 +29,7 @@ const Router = () => {
                     <Route path="search" element={<Searchresults/>}/>
                     
                     
-                    <Route path=":rid/posts/view/" element={<RestaurantPosts/>}/>
+                    
                 </Route>
             </Routes>
         </BrowserRouter>

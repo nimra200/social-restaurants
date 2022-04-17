@@ -1,10 +1,12 @@
 import { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.css';
 /* TODO: Add a delete feature */ 
 export default function AddMenu(){
     const [name, setName] = useState("");
     const [food, setFood] = useState([{}]);
-
+    let navigate = useNavigate();
+    
     const handleAddRow = (event) => {
         event.preventDefault();
         setFood([...food, {}])
@@ -37,7 +39,7 @@ export default function AddMenu(){
             })
             .then(data => {
                 if(data)
-                    console.log(data)
+                    navigate(`/${data.restaurant_id}/menu/view`)
             })
     }
 
