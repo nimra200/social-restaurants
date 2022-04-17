@@ -17,7 +17,6 @@ import CreateRestaurant from "../CreateRestaurant";
 import SignUp from "../Signup";
 import AddMenu from "../AddMenu";
 import ViewMenu from "../ViewMenu";
-import Searchresults from "../Searchresults";
 import EditMenu from "../EditMenu";
 import RestaurantPosts from "../RestaurantPosts";
 
@@ -34,8 +33,6 @@ const Router = () => {
                     <Route path="profile/view" element={<MyProfile/>}/>
                     <Route path="profile/edit" element={<EditProfile/>}/>
                     <Route path="profile/my-feed" element={<ViewFeed/>}/>
-                    
-                    <Route path="search" element={<Searchresults/>}/>
 
                     <Route path="post/:pid/view" element={<ViewPost/>}/>
                     <Route path="restaurants/my-restaurant/create-post" element={<CreatePost/>}/>
