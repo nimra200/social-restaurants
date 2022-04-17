@@ -1,21 +1,36 @@
-import { useParams } from "react-router-dom";
+import { Navigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import './style.css'
 
 export default function ViewMenu(){
     const { restaurantid } = useParams()
     const [menu, setMenu] = useState({id: "", menu_name: "", restaurant: "", foods: []})
+    const [restaurant, setRestaurant] = useState({})
+    const [userData, setUserData] = useState({})
+    const [loggedIn, setLoggedIn] = useState(false)
 
     useEffect(() => {
         fetch(`http://localhost:8000/restaurants/view-menu/${restaurantid}/`,
-            {
-                method: "GET"
-            })
+            {method: "GET"})
             .then(res => res.json())
             .then(json => setMenu(json))
+        fetch(`http://localhost:8000/restaurants/${restaurantid}/view/`,
+            {method:"GET"})
+            .then(res => res.json())
+            .then(json => setRestaurant(json))
+            
+        if(loggedIn) {
+                fetch('http://localhost:8000/accounts/profile/view/', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
+                })
+                    .then(res => res.json())
+                    .then(json => setUserData(json))
+            } 
 
-
-    }, [restaurantid])
+    }, [restaurantid, loggedIn])
     return (<>
         <div style={{backgroundColor: "blue", color:"white"}} className="jumbotron text-center">
             <h1 style={{marginTop: "5%"}}>Menu for {menu.restaurant}</h1>
@@ -47,6 +62,14 @@ export default function ViewMenu(){
             </div>
         </div>
         <h3 style={{textAlign: "center", color:"white"}}>Come dine with us!</h3>
-
+        
+        {userData.id === restaurant.owner_id ?
+            <>
+            <div style={{padding: "2%",textAlign:"center"}}>
+                <a style={{margin: "auto", backgroundColor: "blue", color: "white", padding: "1%"}} role="button" href={`/restaurants/${restaurantid}/menu/edit`}>Edit Menu</a>    
+            </div>
+            </>
+            : null}
+                        
     </>)
 }
