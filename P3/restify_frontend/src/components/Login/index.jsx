@@ -7,9 +7,7 @@ export default function LoginForm() {
     const [error, setError] = useState("")
 
     let navigate = useNavigate();
-
-    // TODO: Error handling
-
+    
     const submitHandler = e => {
         e.preventDefault()
         console.log('form submitted')
@@ -25,8 +23,11 @@ export default function LoginForm() {
             .then(res => {
                 if (res.ok)
                     return res.json()
-                else
+                else {
                     console.log('account does not exist')
+                    setError('Invalid username/password combination')
+                }
+
             })
             .then(data => {
                 if (data) {
@@ -47,6 +48,8 @@ export default function LoginForm() {
                     <div className="text">
                         <div className ="column login-column">
                             <h2>Log In</h2>
+                            <div style={{textAlign: 'center', color: 'red'}}>{error}</div>
+
                             <br />
                             <form onSubmit={submitHandler}>
                                 <label>Username</label>
