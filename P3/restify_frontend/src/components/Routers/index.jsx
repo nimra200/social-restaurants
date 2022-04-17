@@ -10,7 +10,7 @@ import RestaurantPosts from "../RestaurantPosts";
 import ViewMenu from "../ViewMenu";
 import Signup from "../Signup";
 import Searchresults from "../Searchresults";
-
+import EditMenu from "../EditMenu";
 const Router = () => {
     return (
         <BrowserRouter>
@@ -24,8 +24,8 @@ const Router = () => {
                     <Route path="post/create" element={<CreatePost/>}/>
                     <Route path="menu/create" element={<AddMenu/>}/>
                     <Route path=":restaurantid/menu/view" element={<ViewMenu/>}/>
+                    <Route path=":restaurantid/menu/edit" element={<EditMenu/>}/>
                     <Route path=":restaurantid/posts/view" element={<RestaurantPosts/>}/>
-                    
                     <Route path="search" element={<Searchresults/>}/>
                     
                     

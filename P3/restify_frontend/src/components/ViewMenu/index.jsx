@@ -39,7 +39,7 @@ export default function ViewMenu(){
                         <tr key={index}>
                             <td>{food.name}</td>
                             <td>{food.description}</td>
-                            <td>{food.price}</td>
+                            <td>${food.price}</td>
                         </tr>
                     ))}
                 </tbody>

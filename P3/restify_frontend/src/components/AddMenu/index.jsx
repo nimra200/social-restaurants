@@ -100,7 +100,7 @@ export default function AddMenu(){
                                     
                                 </td>
                                 <td>
-                                    <button onClick={(event) => {
+                                    <button style={{width:"100%"}} onClick={(event) => {
                                                     event.preventDefault();
                                                     const updated_food = [...food];
                                                     updated_food.splice(index, 1);

@@ -27,7 +27,8 @@ class DeleteMenuAPIView(DestroyAPIView):
     queryset = Menu.objects.all()
 
     def get_object(self):
-        obj = get_object_or_404(self.queryset, pk=self.kwargs["pk"])
+        restaurant = get_object_or_404(Restaurant, id=self.kwargs["pk"])
+        obj = get_object_or_404(self.queryset, restaurant=restaurant)
         self.check_object_permissions(self.request, obj)
         return obj
 

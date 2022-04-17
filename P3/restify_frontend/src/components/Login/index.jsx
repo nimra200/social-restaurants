@@ -77,7 +77,7 @@ export default function LoginForm() {
                                 /><br /><p>{errors.username}</p><br /><br />
                                     <label>Password</label>
                                     <input
-                                        type="text"
+                                        type="password"
                                         name="password"
                                         value={details.password}
                                         onChange={e => setDetails({...details, password: e.target.value})}
