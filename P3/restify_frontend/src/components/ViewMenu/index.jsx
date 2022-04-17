@@ -10,6 +10,10 @@ export default function ViewMenu(){
     const [loggedIn, setLoggedIn] = useState(false)
 
     useEffect(() => {
+        
+        if (localStorage.getItem('token')) {
+            setLoggedIn(true)
+        }
         fetch(`http://localhost:8000/restaurants/view-menu/${restaurantid}/`,
             {method: "GET"})
             .then(res => res.json())
