@@ -1,4 +1,4 @@
-import { useState, handle, useEffect } from "react";
+import { useState, handle, useEffect, useRef, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import LikeButton from "../LikeButton";
 import UnlikeButton from "../UnlikeButton";
@@ -8,6 +8,22 @@ export default function RestaurantPosts(){
     const [name, setName] = useState("");
     const { restaurantid } = useParams()
 
+    const [pageNumber, setPageNumber] = useState(1)
+    const [loading, setLoading] = useState(true)
+    const [hasMore, setHasMore] = useState(false)
+    const observer = useRef()
+
+    const lastPostElementRef = useCallback(node => {
+        if (loading) return
+        if (observer.current) observer.current.disconnect()
+        observer.current = new IntersectionObserver(entries => {
+            if (entries[0].isIntersecting && hasMore) {
+                console.log('at bottom')
+                setPageNumber(prevPageNumber => prevPageNumber + 1)
+            }
+        })
+        if (node) observer.current.observe(node)
+    }, [loading, hasMore])
 
     const likeBtnClicked = id => {
         fetch(`http://localhost:8000/restaurants/post/${id}/like/`, {
@@ -53,6 +69,7 @@ export default function RestaurantPosts(){
     }
 
     useEffect(() =>  {
+        setLoading(true)
         fetch(`http://localhost:8000/restaurants/${restaurantid}/view/`,
             {
                 method: "GET"
@@ -61,7 +78,7 @@ export default function RestaurantPosts(){
             .then(json => {
                 var restaurantOwner = json["id"];
                 setName(json["name"]);
-                return fetch(`http://localhost:8000/restaurants/${restaurantOwner}/posts/`,
+                return fetch(`http://localhost:8000/restaurants/${restaurantOwner}/posts/?page=${pageNumber}`,
                     {
                         method: "GET",
                         headers: {
@@ -70,10 +87,15 @@ export default function RestaurantPosts(){
                     })
             })
             .then(res => res.json())
-            .then(data => {
-                setPosts(data);
+            .then(json => {
+                const new_res = [...new Set([...posts.results, ...json.results ])]
+                const new_data = {results: new_res}
+                setPosts({...posts, ...new_data})
+                setHasMore(json.next !== null)
+                setLoading(false)
+                //setPosts(json);
             })
-    }, [restaurantid])
+    }, [restaurantid, pageNumber])
 
 
     return (
@@ -85,7 +107,7 @@ export default function RestaurantPosts(){
             <div className="container">
                 <div className="feed-flex-container">
                     {posts.results.map((post, index) => (
-                        <div key={post.id} className="row feed-row">
+                        <div ref={posts.results.length === index + 1 ? lastPostElementRef : null} key={post.id} className="row feed-row">
                             <div className="feed-blog_post_container">
                                 {post.picture ?
                                     <img className="feed-img"
