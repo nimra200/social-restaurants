@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 export default function Signup() {
     const [details, setDetails] = useState({username: "", password: "", password2: "", email: ""})
     const [errors, setErrors] = useState({})
+    const [usernameTaken, setUsernameTaken] = useState('')
 
     let navigate = useNavigate()
 
@@ -56,6 +57,7 @@ export default function Signup() {
                 }
                 else {
                     console.log('Account with same username or email already exists')
+                    setUsernameTaken('Account with same username or email already exists')
                     return res.json()
                 }
 
@@ -76,6 +78,7 @@ export default function Signup() {
                         <div className="text">
                             <div className ="column">
                                 <h2>Sign Up</h2>
+                                <div style={{textAlign: 'center', color: 'red'}}>{usernameTaken}</div>
                                 <br />
                                 <form onSubmit={submitHandler}>
                                     <label>Username</label><br/>

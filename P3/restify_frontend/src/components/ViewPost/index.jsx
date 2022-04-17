@@ -45,9 +45,7 @@ export default function ViewPost() {
         }
     }, [data])
 
-    console.log(data)
-    console.log(userData)
-    console.log(restaurantData)
+
 
     const likeBtnClicked = id => {
         fetch(`http://localhost:8000/restaurants/post/${id}/like/`, {
@@ -106,22 +104,22 @@ export default function ViewPost() {
 
                         <br/>
 
-                            <p>
-                                {data.description}
-                            </p>
+                        <p>
+                            {data.description}
+                        </p>
                     </div>
                 </div>
 
                 <div className="view-post-col2">
 
                     <div className="view-post-profile" onClick={() => navigate(`/profile/${data.owner_id}/view`)}>
-                        {data.profile_picture ? <img className="view-post-pfp" src={userData.profile_picture}/> : null} <a>{userData.username}</a>
+                        {userData.profile_picture ? <img className="view-post-pfp" src={userData.profile_picture}/> : null} <a>{userData.username}</a>
                     </div>
 
                     <div className="view-post-profile" onClick={() => navigate(`/restaurants/${data.restaurant_id}`)}>
                         <img className="view-post-pfp"
                              src={restaurantData.logo}/>
-                            <a>{restaurantData.name}</a>
+                        <a>{restaurantData.name}</a>
                     </div>
 
                     <div style={{paddingLeft: "10px", marginTop: '15px'}}>

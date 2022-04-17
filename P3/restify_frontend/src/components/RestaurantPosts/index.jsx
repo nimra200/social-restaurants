@@ -1,4 +1,4 @@
-import { useState, handle, useEffect, useRef, useCallback } from "react";
+import {useState, handle, useEffect, useRef, useCallback} from "react";
 import { useParams } from "react-router-dom";
 import LikeButton from "../LikeButton";
 import UnlikeButton from "../UnlikeButton";
@@ -6,15 +6,37 @@ import UnlikeButton from "../UnlikeButton";
 export default function RestaurantPosts(){
     const [posts, setPosts] = useState({results: []});
     const [name, setName] = useState("");
+    const [loggedIn, setLoggedIn] = useState(false)
+    const [pageNumber, setPageNumber] = useState(1)
+    const [hasMore, setHasMore] = useState(false)
+    const [userData, setUserData] = useState({})
     const { restaurantid } = useParams()
 
-    const [pageNumber, setPageNumber] = useState(1)
-    const [loading, setLoading] = useState(true)
-    const [hasMore, setHasMore] = useState(false)
     const observer = useRef()
 
+
+    useEffect(() => {
+        document.title = "Restaurant Posts"
+        if(localStorage.getItem('token')) setLoggedIn(true)
+        else setLoggedIn(false)
+    }, [])
+
+    useEffect(() => {
+        if(loggedIn) {
+            fetch('http://localhost:8000/accounts/profile/view/', {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            })
+                .then(res => res.json())
+                .then(json => {
+                    setUserData(json)
+                })
+        }
+    }, [loggedIn])
+
     const lastPostElementRef = useCallback(node => {
-        if (loading) return
         if (observer.current) observer.current.disconnect()
         observer.current = new IntersectionObserver(entries => {
             if (entries[0].isIntersecting && hasMore) {
@@ -23,7 +45,8 @@ export default function RestaurantPosts(){
             }
         })
         if (node) observer.current.observe(node)
-    }, [loading, hasMore])
+    }, [hasMore])
+
 
     const likeBtnClicked = id => {
         fetch(`http://localhost:8000/restaurants/post/${id}/like/`, {
@@ -69,7 +92,6 @@ export default function RestaurantPosts(){
     }
 
     useEffect(() =>  {
-        setLoading(true)
         fetch(`http://localhost:8000/restaurants/${restaurantid}/view/`,
             {
                 method: "GET"
@@ -81,22 +103,48 @@ export default function RestaurantPosts(){
                 return fetch(`http://localhost:8000/restaurants/${restaurantOwner}/posts/?page=${pageNumber}`,
                     {
                         method: "GET",
-                        headers: {
-                            'Authorization': `Bearer ${localStorage.getItem('token')}`  // get auth key from local storage
-                        }
+                        headers: loggedIn ? {'Authorization': `Bearer ${localStorage.getItem('token')}`} : {}
                     })
             })
             .then(res => res.json())
             .then(json => {
-                const new_res = [...new Set([...posts.results, ...json.results ])]
+                const new_res = [...new Set([...posts.results, ...json.results])]
                 const new_data = {results: new_res}
                 setPosts({...posts, ...new_data})
                 setHasMore(json.next !== null)
-                setLoading(false)
-                //setPosts(json);
             })
-    }, [restaurantid, pageNumber])
+    }, [restaurantid, loggedIn, pageNumber])
 
+    console.log(userData)
+
+    function delete_btn_clicked(e, post) {
+        fetch(`http://localhost:8000/restaurants/${post.id}/delete-post/`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+        })
+            .then(res => res.json())
+            .then(json => {
+                const data = [...posts.results].filter(c => c.id !== post.id)
+                setPosts({...posts, results: data})
+            })
+
+
+    }
+
+
+    function get_like_btn(post) {
+        if(!loggedIn) return null
+        return post.userLiked ? <UnlikeButton classname="feed-buttons btn btn-primary" unlike_fn={() => unlikeBtnClicked(post.id)}/> : <LikeButton classname="feed-buttons btn btn-primary" like_fn={() => likeBtnClicked(post.id)}/>
+    }
+
+    function get_delete_btn(post) {
+        if (userData.restaurant === parseInt(restaurantid)) {
+            return <a className="feed-buttons btn btn-danger" style={{right: '20px'}} onClick={e => delete_btn_clicked(e, post)}>delete</a>
+        }
+        return null
+    }
 
     return (
         <>
@@ -125,9 +173,9 @@ export default function RestaurantPosts(){
                                     <p>{post.description}</p>
                                     <br/>
 
-                                    {post.userLiked ? <UnlikeButton unlike_fn={() => unlikeBtnClicked(post.id)}/> :
-                                        <LikeButton like_fn={() => likeBtnClicked(post.id)}/>}
+                                    {get_like_btn(post)}
                                     <a className="feed-buttons btn btn-link" style={{marginLeft: '100px'}} href={`/post/${post.id}/view`} role="button">Read More</a>
+                                    {get_delete_btn(post)}
                                 </div>
                             </div>
 
