@@ -1,4 +1,4 @@
-import { Navigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import './style.css'
 
@@ -9,6 +9,8 @@ export default function ViewMenu(){
     const [userData, setUserData] = useState({})
     const [loggedIn, setLoggedIn] = useState(false)
 
+    let navigate = useNavigate()
+    
     useEffect(() => {
         
         if (localStorage.getItem('token')) {
@@ -17,7 +19,12 @@ export default function ViewMenu(){
         fetch(`http://localhost:8000/restaurants/view-menu/${restaurantid}/`,
             {method: "GET"})
             .then(res => res.json())
-            .then(json => setMenu(json))
+            .then(json => {
+                if (json.menu_name)
+                    setMenu(json)
+                else
+                    navigate("/restaurants/my-restaurant/create-menu")
+            })
         fetch(`http://localhost:8000/restaurants/${restaurantid}/view/`,
             {method:"GET"})
             .then(res => res.json())
