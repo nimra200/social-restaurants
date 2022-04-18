@@ -26,3 +26,5 @@ export default function ImageSlider({data}) {
 
     )
 }
+
+// modified: https://github.com/Ziratsu/slider-react
